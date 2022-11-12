@@ -1,6 +1,9 @@
 package com.date.tingting.domain.user;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 
@@ -13,10 +16,10 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    private String userEmail;
+    private String userMail;
 
-    @Column
-    private Long userNo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long userNo;
 
     @Column
     private String password;
@@ -30,10 +33,23 @@ public class User {
     private String userName;
     @Column
     private String isDel;
+
     @Column
+    @CreatedDate
     private String registerDate;
+
     @Column
     private String updateDate;
 
+
+    @Builder
+    public User(String userMail, String password, String university, String major, String userName ) {
+        this.userMail = userMail;
+        this.password = password;
+        this.university = university;
+        this.major = major;
+        this.userName = userName;
+
+    }
 
 }

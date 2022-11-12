@@ -1,39 +1,42 @@
 package com.date.tingting.web.dto;
 
 import com.date.tingting.domain.user.User;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserDto {
 
     private Long userNo;
-    private String userEmail;
+    private String userMail;
     private String password;
     private String salt;
     private String university;
     private String major;
     private String userName;
-    private String isDel;
+    //생성자에서 초기회 추천
+    private String isDel = "0";
     private String registerDate;
     private String updateDate;
 
 
-    @Builder
-    public UserDto(String userEmail, String password, String university, String major, String userName) {
-        this.userEmail = userEmail;
-        this.password = password;
-        this.university = university;
-        this.major = major;
-        this.userName = userName;
+    public UserDto(User entity) {
+        this.userNo = entity.getUserNo();
+        this.userMail = entity.getUserMail();
+        this.password = entity.getPassword();
+        this.university = entity.getUniversity();
+        this.major = entity.getMajor();
+        this.userName = entity.getUserName();
     }
 
     public User toEntity() {
         return User.builder()
-                .userEmail(userEmail)
+                .userMail(userMail)
                 .password(password)
                 .university(university)
                 .major(major)
+                .isDel(isDel)
                 .userName(userName)
                 .build();
     }
