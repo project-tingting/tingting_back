@@ -1,4 +1,4 @@
-package com.example.tingting;
+package com.date.tingting;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

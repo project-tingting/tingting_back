@@ -1,4 +1,4 @@
-package com.example.tingting;
+package com.date.tingting;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
