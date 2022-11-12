@@ -1,6 +1,5 @@
 package com.date.tingting.web;
 
-import com.date.tingting.domain.user.UserRepository;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +19,10 @@ public class UserController {
         return userService.findByUserMail(userMail);
     }
 
-
     @PostMapping("/user")
     public long save(@RequestBody UserDto userDto) {
         return userService.save(userDto);
     }
-
-
-
-
 
 
 }

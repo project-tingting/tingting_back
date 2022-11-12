@@ -1,10 +1,8 @@
 package com.date.tingting.domain.user;
 
+import com.date.tingting.domain.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.*;
 
 @ToString
@@ -13,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     private String userMail;
@@ -34,12 +32,12 @@ public class User {
     @Column
     private String isDel;
 
-    @Column
-    @CreatedDate
-    private String registerDate;
-
-    @Column
-    private String updateDate;
+//    @Column
+//    @CreatedDate
+//    private String registerDate;
+//
+//    @Column
+//    private String updateDate;
 
 
     @Builder
@@ -49,7 +47,6 @@ public class User {
         this.university = university;
         this.major = major;
         this.userName = userName;
-
     }
 
 }
