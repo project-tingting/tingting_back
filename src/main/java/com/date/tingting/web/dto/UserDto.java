@@ -2,9 +2,10 @@ package com.date.tingting.web.dto;
 
 import com.date.tingting.domain.user.User;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class UserDto {
 
