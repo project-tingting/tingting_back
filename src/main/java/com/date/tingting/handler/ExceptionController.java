@@ -23,9 +23,9 @@ public class ExceptionController {
                 .message("잘못된 요청입니다.")
                 .build();
 
-        for (FieldError fieldError : e.getFieldErrors()) {
-            response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
-        }
+//        for (FieldError fieldError : e.getFieldErrors()) {
+//            response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
+//        }
 
         return response;
     }

@@ -1,4 +1,4 @@
-package com.date.tingting.web.dto;
+package com.date.tingting.web.requestDto;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.handler.exception.InValidRequest;
@@ -8,20 +8,27 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRegister {
+public class UserRequest {
+
+    private String uuid;
     private String userMail;
     private String password;
     private String university;
     private String major;
-    private String userName;
+    private String nickName;
+    private String gender;
+    private String birthDate;
+
 
     @Builder
-    public UserRegister(String userMail, String password, String university, String major, String userName) {
+    public UserRequest(String userMail, String password, String university, String major, String nickName, String birthDate) {
         this.userMail = userMail;
         this.password = password;
         this.university = university;
         this.major = major;
-        this.userName = userName;
+        this.nickName = nickName;
+        this.gender = gender;
+        this.birthDate = birthDate;
     }
 
     public void validate() {
@@ -32,11 +39,14 @@ public class UserRegister {
 
     public User toEntity() {
         return User.builder()
+                .uuid(uuid)
                 .userMail(userMail)
                 .password(password)
                 .university(university)
                 .major(major)
-                .userName(userName)
+                .nickName(nickName)
+                .gender(gender)
+                .birthDate(birthDate)
                 .build();
     }
 

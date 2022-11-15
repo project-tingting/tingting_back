@@ -2,8 +2,7 @@ package com.date.tingting.service;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.web.dto.UserRegister;
-import org.junit.jupiter.api.Assertions;
+import com.date.tingting.web.requestDto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,22 +28,22 @@ class UserServiceTest {
     @DisplayName("회원가입 - 정상")
     void 회원가입() {
         // given
-        UserRegister userRegister = UserRegister.builder()
+        UserRequest userRequest = UserRequest.builder()
                 .userMail("test@nate.com")
                 .password("1234")
                 .university("서울대학교")
                 .major("컴퓨터공학과")
-                .userName("홍길동")
+                .nickName("홍길동")
                 .build();
 
         // when
-        userService.save(userRegister);
+        userService.save(userRequest);
 
         // then
         assertEquals(1, userRepository.count());
         User user = userRepository.findAll().get(0);
         assertEquals("test@nate.com", user.getUserMail());
-        assertEquals("홍길동", user.getUserName());
+        assertEquals("홍길동", user.getNickName());
     }
 
 }

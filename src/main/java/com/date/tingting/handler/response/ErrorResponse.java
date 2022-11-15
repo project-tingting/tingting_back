@@ -9,15 +9,15 @@ import java.util.Map;
 public class ErrorResponse {
     private final String code;
     private final String message;
-    private final Map<String, String> validation;
+//    private final Map<String, String> validation;
 
     @Builder
     public ErrorResponse(String code, String message, Map<String, String> validation) {
         this.code = code;
         this.message = message;
-        this.validation = validation;
+//        this.validation = validation;
     }
-    public void addValidation(String fieldNAme, String errorMessage){
-        this.validation.put(fieldNAme, errorMessage);
-    }
+//    public void addValidation(String fieldNAme, String errorMessage){
+//        this.validation.put(fieldNAme, errorMessage);
+//    }
 }

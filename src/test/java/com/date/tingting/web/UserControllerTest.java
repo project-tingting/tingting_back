@@ -2,7 +2,7 @@ package com.date.tingting.web;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.web.dto.UserRegister;
+import com.date.tingting.web.requestDto.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,7 +45,7 @@ class UserControllerTest {
                 .password("1234")
                 .university("서울대학교")
                 .major("컴퓨터공학과")
-                .userName("홍길동")
+                .nickName("홍길동")
                 .isDel("0")
                 .build();
         userRepository.save(user);
@@ -55,7 +55,7 @@ class UserControllerTest {
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.university").value("서울대학교"))
-                .andExpect(jsonPath("$.userName").value("홍길동"))
+                .andExpect(jsonPath("$.nickName").value("홍길동"))
                 .andDo(print());
     }
 
@@ -63,14 +63,14 @@ class UserControllerTest {
     @DisplayName("회원가입 - 잘못된 이메일 형식")
     void 회원가입_실패_1() throws Exception {
         // given
-        UserRegister userRegister = UserRegister.builder()
+        UserRequest userRequest = UserRequest.builder()
                 .userMail("test#nate.com")
                 .password("1234")
                 .university("서울대학교")
                 .major("컴퓨터공학과")
-                .userName("홍길동")
+                .nickName("홍길동")
                 .build();
-        String json = objectMapper.writeValueAsString(userRegister);
+        String json = objectMapper.writeValueAsString(userRequest);
         // expected
         mockMvc.perform(post("/user")
                 .contentType(APPLICATION_JSON)

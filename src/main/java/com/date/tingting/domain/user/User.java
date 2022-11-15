@@ -12,41 +12,37 @@ import javax.persistence.*;
 public class User extends BaseTimeEntity {
 
     @Id
-    private String userMail;
-
+    private String uuid;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userNo;
-
+    @Column
+    private String userMail;
     @Column
     private String password;
-    @Column
-    private String salt;
     @Column
     private String university;
     @Column
     private String major;
     @Column
-    private String userName;
+    private String nickName;
+    @Column
+    private String gender;
+    @Column
+    private String birthDate;
     @Column
     private String isDel;
 
-//    @Column
-//    @CreatedDate
-//    private String registerDate;
-//
-//    @Column
-//    private String updateDate;
-
-
     @Builder
-    public User(String userMail, long userNo, String password, String salt, String university, String major, String userName, String isDel) {
+    public User(String uuid, String userMail, long userNo, String password, String salt, String university, String major, String nickName, String gender, String birthDate,  String isDel) {
+        this.uuid = uuid;
         this.userMail = userMail;
         this.userNo = userNo;
         this.password = password;
-        this.salt = salt;
         this.university = university;
         this.major = major;
-        this.userName = userName;
+        this.nickName = nickName;
+        this.gender = gender;
+        this.birthDate = birthDate;
         this.isDel = "0";
     }
 }

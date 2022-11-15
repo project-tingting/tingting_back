@@ -1,8 +1,8 @@
 package com.date.tingting.web;
 
 import com.date.tingting.service.UserService;
-import com.date.tingting.web.dto.UserDto;
-import com.date.tingting.web.dto.UserRegister;
+import com.date.tingting.web.responseDto.UserResponse;
+import com.date.tingting.web.requestDto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,15 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-    @GetMapping("/user/{userMail}")
-    public UserDto findByUserMail(@PathVariable String userMail) {
-        return userService.findByUserMail(userMail);
+    @GetMapping("/user/{uuid}")
+    public UserResponse findByUuid(@PathVariable String uuid) {
+        return userService.findByUuid(uuid);
     }
 
-    @PostMapping("/user")
-    public long save(@RequestBody UserRegister userRegister) {
-        userRegister.validate();
-        return userService.save(userRegister);
+    @PostMapping("/user/register")
+    public long save(@RequestBody UserRequest userRequest) {
+        userRequest.validate();
+        return userService.save(userRequest);
     }
 
 
