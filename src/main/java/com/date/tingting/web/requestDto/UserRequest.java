@@ -1,7 +1,7 @@
 package com.date.tingting.web.requestDto;
 
 import com.date.tingting.domain.user.User;
-import com.date.tingting.handler.exception.InValidRequest;
+import com.date.tingting.handler.exception.TingTingCommonException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class UserRequest {
 
+    private long userNo;
     private String uuid;
     private String userMail;
     private String password;
@@ -33,12 +34,13 @@ public class UserRequest {
 
     public void validate() {
         if (!userMail.contains("@")) {
-            throw new InValidRequest("userMail", "올바른 이메일 형식이 아닙니다.");
+            throw new TingTingCommonException("올바른 이메일 형식이 아닙니다.");
         }
     }
 
     public User toEntity() {
         return User.builder()
+                .userNo(userNo)
                 .uuid(uuid)
                 .userMail(userMail)
                 .password(password)

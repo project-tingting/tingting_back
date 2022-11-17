@@ -2,7 +2,7 @@ package com.date.tingting.service;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.handler.exception.InValidRequest;
+import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
 import com.date.tingting.web.responseDto.UserResponse;
 import com.date.tingting.web.requestDto.UserRequest;
@@ -19,9 +19,21 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public long save(UserRequest userRequest) {
+    public long save(UserRequest userRequest){
+
+        //유저 고유 식별 키 생성
         String uuid = UUID.randomUUID().toString().replace("-", "");
         userRequest.setUuid(uuid);
+
+        //주민등록번호를 기준으로 성별 분류
+        if(userRequest.getBirthDate().length() != 7){
+            //예외 발생
+            throw new TingTingCommonException("잘못된 주민등록번호 형식입니다.");
+        }
+        char genderNum = userRequest.getBirthDate().charAt(6);
+        String gender = genderNum%2 == 0 ? "w" : "m" ;
+        userRequest.setGender(gender);
+
         return userRepository.save(userRequest.toEntity()).getUserNo();
     }
 

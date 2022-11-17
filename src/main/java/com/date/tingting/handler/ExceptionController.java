@@ -23,10 +23,6 @@ public class ExceptionController {
                 .message("잘못된 요청입니다.")
                 .build();
 
-//        for (FieldError fieldError : e.getFieldErrors()) {
-//            response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
-//        }
-
         return response;
     }
 
@@ -37,7 +33,6 @@ public class ExceptionController {
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(statusCode))
                 .message(e.getMessage())
-                .validation(e.getValidation())
                 .build();
 
         return ResponseEntity.status(statusCode)

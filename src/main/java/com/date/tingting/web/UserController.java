@@ -1,5 +1,7 @@
 package com.date.tingting.web;
 
+import com.date.tingting.response.Response;
+import com.date.tingting.response.ResponseService;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.responseDto.UserResponse;
 import com.date.tingting.web.requestDto.UserRequest;
@@ -12,16 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+
+    @Autowired
+    private final ResponseService responseService;
     @Autowired
     private final UserService userService;
 
     @GetMapping("/user/{uuid}")
-    public UserResponse findByUuid(@PathVariable String uuid) {
-        return userService.findByUuid(uuid);
-    }
+    public Response findByUuid(@PathVariable String uuid) {
+        return responseService.getResponse(userService.findByUuid(uuid));
+     }
 
     @PostMapping("/user/register")
-    public long save(@RequestBody UserRequest userRequest) {
+    public long save(@RequestBody UserRequest userRequest){
         userRequest.validate();
         return userService.save(userRequest);
     }
