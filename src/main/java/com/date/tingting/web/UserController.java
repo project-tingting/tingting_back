@@ -26,9 +26,9 @@ public class UserController {
      }
 
     @PostMapping("/user/register")
-    public long save(@RequestBody UserRequest userRequest){
+    public Response save(@RequestBody UserRequest userRequest){
         userRequest.validate();
-        return userService.save(userRequest);
+        return responseService.getResponse(userService.save(userRequest));
     }
 
 

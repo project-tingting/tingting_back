@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
 import java.util.UUID;
 
 @Service
@@ -19,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public long save(UserRequest userRequest){
+    public HashMap save(UserRequest userRequest){
 
         //유저 고유 식별 키 생성
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -34,7 +36,12 @@ public class UserService {
         String gender = genderNum%2 == 0 ? "w" : "m" ;
         userRequest.setGender(gender);
 
-        return userRepository.save(userRequest.toEntity()).getUserNo();
+        uuid =  userRepository.save(userRequest.toEntity()).getUuid();
+
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("uuid", uuid);
+
+        return map;
     }
 
     @Transactional(readOnly = true)
