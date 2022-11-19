@@ -3,6 +3,6 @@ package com.date.tingting.response;
 import lombok.Getter;
 
 @Getter
-public class Response<T> extends CommonResponse {
-    T result;
+public class SingleResponse<T> extends CommonResponse {
+    T data;
 }

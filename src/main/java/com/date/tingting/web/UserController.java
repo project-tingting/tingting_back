@@ -1,6 +1,6 @@
 package com.date.tingting.web;
 
-import com.date.tingting.response.Response;
+import com.date.tingting.response.SingleResponse;
 import com.date.tingting.response.ResponseService;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.requestDto.UserRequest;
@@ -20,14 +20,14 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/user/{uuid}")
-    public Response findByUuid(@PathVariable String uuid) {
-        return responseService.getResponse(userService.findByUuid(uuid));
+    public SingleResponse findByUuid(@PathVariable String uuid) {
+        return responseService.getSingleResponse(userService.findByUuid(uuid));
      }
 
     @PostMapping("/user/register")
-    public Response save(@RequestBody UserRequest userRequest){
+    public SingleResponse save(@RequestBody UserRequest userRequest){
         userRequest.validate();
-        return responseService.getResponse(userService.save(userRequest));
+        return responseService.getSingleResponse(userService.save(userRequest));
     }
 
 }
