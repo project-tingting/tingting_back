@@ -3,7 +3,6 @@ package com.date.tingting.web;
 import com.date.tingting.response.Response;
 import com.date.tingting.response.ResponseService;
 import com.date.tingting.service.UserService;
-import com.date.tingting.web.responseDto.UserResponse;
 import com.date.tingting.web.requestDto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +29,5 @@ public class UserController {
         userRequest.validate();
         return responseService.getResponse(userService.save(userRequest));
     }
-
 
 }

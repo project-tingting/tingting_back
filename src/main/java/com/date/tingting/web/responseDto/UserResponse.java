@@ -10,8 +10,6 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class UserResponse {
-
-    private Long userNo;
     private String uuid;
     private String userMail;
     private String password;
@@ -26,7 +24,6 @@ public class UserResponse {
 
     public UserResponse(User entity) {
         this.uuid = entity.getUuid();
-        this.userNo = entity.getUserNo();
         this.userMail = entity.getUserMail();
         this.password = entity.getPassword();
         this.university = entity.getUniversity();
@@ -34,20 +31,7 @@ public class UserResponse {
         this.nickName = entity.getNickName();
         this.registerDate = entity.getRegisterDate();
         this.updateDate = entity.getUpdateDate();
-    }
 
-    public User toEntity() {
-        return User.builder()
-                .userMail(uuid)
-                .userMail(userMail)
-                .password(password)
-                .university(university)
-                .major(major)
-                .isDel(isDel)
-                .nickName(nickName)
-                .registerDate(registerDate)
-                .updateDate(updateDate)
-                .build();
     }
 
 }

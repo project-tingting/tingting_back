@@ -27,16 +27,17 @@ public class UserService {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         userRequest.setUuid(uuid);
 
-        //주민등록번호를 기준으로 성별 분류
-        if(userRequest.getBirthDate().length() != 7){
-            //예외 발생
-            throw new TingTingCommonException("잘못된 주민등록번호 형식입니다.");
-        }
+        //주민번호로 성별 구분
         char genderNum = userRequest.getBirthDate().charAt(6);
         String gender = genderNum%2 == 0 ? "w" : "m" ;
         userRequest.setGender(gender);
 
-        uuid =  userRepository.save(userRequest.toEntity()).getUuid();
+        //성별 구분용으로 받은 주민번호 마지막 숫자 제거
+        String birthDate = userRequest.getBirthDate();
+        birthDate  = birthDate.substring(0, birthDate.length() - 1);
+        userRequest.setBirthDate(birthDate);
+
+        uuid = userRepository.save(userRequest.toEntity()).getUuid();
 
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("uuid", uuid);
@@ -51,6 +52,7 @@ public class UserService {
         if(entity == null){
             throw new TingTingDataNotFoundException();
         }
+
         return new UserResponse(entity);
     }
 

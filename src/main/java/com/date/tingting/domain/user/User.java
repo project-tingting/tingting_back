@@ -2,6 +2,7 @@ package com.date.tingting.domain.user;
 
 import com.date.tingting.domain.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,8 +16,6 @@ public class User extends BaseTimeEntity {
 
     @Id
     private String uuid;
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userNo;
     @Column
     private String userMail;
     @Column
@@ -34,25 +33,24 @@ public class User extends BaseTimeEntity {
     @Column
     private String isDel;
 
-    @Column
-    private LocalDateTime registerDate;
-
-    @Column
-    private LocalDateTime updateDate;
-
     @Builder
-    public User(String uuid, String userMail, long userNo, String password, String university, String major, String nickName, String gender, String birthDate, LocalDateTime registerDate, LocalDateTime updateDate, String isDel) {
+    public User(String uuid,
+                String userMail,
+                String password,
+                String university,
+                String major,
+                String nickName,
+                String gender,
+                String birthDate,
+                String isDel) {
         this.uuid = uuid;
         this.userMail = userMail;
-        this.userNo = userNo;
         this.password = password;
         this.university = university;
         this.major = major;
         this.nickName = nickName;
         this.gender = gender;
         this.birthDate = birthDate;
-        this.registerDate = registerDate;
-        this.updateDate = updateDate;
-        this.isDel = "0";
+        this.isDel = isDel;
     }
 }

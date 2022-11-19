@@ -59,23 +59,23 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-    @Test
-    @DisplayName("회원가입 - 잘못된 이메일 형식")
-    void 회원가입_실패_1() throws Exception {
-        // given
-        UserRequest userRequest = UserRequest.builder()
-                .userMail("test#nate.com")
-                .password("1234")
-                .university("서울대학교")
-                .major("컴퓨터공학과")
-                .nickName("홍길동")
-                .build();
-        String json = objectMapper.writeValueAsString(userRequest);
-        // expected
-        mockMvc.perform(post("/user")
-                .contentType(APPLICATION_JSON)
-                .content(json))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("회원가입 - 잘못된 이메일 형식")
+//    void 회원가입_실패_1() throws Exception {
+//        // given
+//        UserRequest userRequest = UserRequest.builder()
+//                .userMail("test#nate.com")
+//                .password("1234")
+//                .university("서울대학교")
+//                .major("컴퓨터공학과")
+//                .nickName("홍길동")
+//                .build();
+//        String json = objectMapper.writeValueAsString(userRequest);
+//        // expected
+//        mockMvc.perform(post("/user")
+//                .contentType(APPLICATION_JSON)
+//                .content(json))
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//    }
 }
