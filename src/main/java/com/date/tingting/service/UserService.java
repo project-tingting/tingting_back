@@ -2,19 +2,14 @@ package com.date.tingting.service;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
-import com.date.tingting.web.responseDto.UserResponse;
 import com.date.tingting.web.requestDto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public HashMap save(UserRequest userRequest){
+    public String save(UserRequest userRequest){
 
         //유저 고유 식별 키 생성
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -41,35 +36,29 @@ public class UserService {
 
         uuid = userRepository.save(userRequest.toEntity()).getUuid();
 
-        HashMap<String,Object> map = new HashMap<String,Object>();
-        map.put("uuid", uuid);
-
-        return map;
+        return uuid;
     }
 
     @Transactional(readOnly = true)
-    public UserResponse findByUuid(String uuid) {
+    public User findByUuid(String uuid) {
         User user = userRepository.findByUuid(uuid);
 
         if(user == null){
             throw new TingTingDataNotFoundException();
         }
 
-        return new UserResponse(user);
+        return user;
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponse> findAll() {
+    public List<User> findAll() {
         List<User> user = userRepository.findAll();
 
         if(user == null){
             throw new TingTingDataNotFoundException();
         }
 
-        return user.stream()
-                .map(UserResponse::new)
-                .collect(Collectors.toList());
+        return user;
     }
-
 
 }
