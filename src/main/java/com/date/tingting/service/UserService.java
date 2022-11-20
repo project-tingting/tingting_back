@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,13 +49,27 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponse findByUuid(String uuid) {
-        User entity = userRepository.findByUuid(uuid);
+        User user = userRepository.findByUuid(uuid);
 
-        if(entity == null){
+        if(user == null){
             throw new TingTingDataNotFoundException();
         }
 
-        return new UserResponse(entity);
+        return new UserResponse(user);
     }
+
+    @Transactional(readOnly = true)
+    public List<UserResponse> findAll() {
+        List<User> user = userRepository.findAll();
+
+        if(user == null){
+            throw new TingTingDataNotFoundException();
+        }
+
+        return user.stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
+    }
+
 
 }

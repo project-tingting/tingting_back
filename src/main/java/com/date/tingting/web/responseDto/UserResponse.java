@@ -3,9 +3,7 @@ package com.date.tingting.web.responseDto;
 import com.date.tingting.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor

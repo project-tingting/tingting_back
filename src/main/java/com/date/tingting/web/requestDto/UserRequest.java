@@ -2,7 +2,6 @@ package com.date.tingting.web.requestDto;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.handler.exception.TingTingCommonException;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,6 @@
 package com.date.tingting.web;
 
+import com.date.tingting.response.ListResponse;
 import com.date.tingting.response.SingleResponse;
 import com.date.tingting.response.ResponseService;
 import com.date.tingting.service.UserService;
@@ -22,7 +23,12 @@ public class UserController {
     @GetMapping("/user/{uuid}")
     public SingleResponse findByUuid(@PathVariable String uuid) {
         return responseService.getSingleResponse(userService.findByUuid(uuid));
-     }
+    }
+
+    @GetMapping("/user/list")
+    public ListResponse findAll() {
+        return responseService.getListResponse(userService.findAll());
+    }
 
     @PostMapping("/user/register")
     public SingleResponse save(@RequestBody UserRequest userRequest){

@@ -2,16 +2,13 @@ package com.date.tingting.domain.user;
 
 import com.date.tingting.domain.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @ToString
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
     @Id
