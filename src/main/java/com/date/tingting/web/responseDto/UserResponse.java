@@ -3,19 +3,23 @@ package com.date.tingting.web.responseDto;
 import com.date.tingting.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 public class UserResponse {
+
     private String uuid;
     private String userMail;
     private String password;
     private String university;
     private String major;
     private String nickName;
-    //생성자에서 초기회 추천
-    private String isDel = "0";
+    private String gender;
+    private String birthDate;
     private LocalDateTime registerDate;
     private LocalDateTime updateDate;
 
@@ -27,9 +31,10 @@ public class UserResponse {
         this.university = entity.getUniversity();
         this.major = entity.getMajor();
         this.nickName = entity.getNickName();
+        this.gender = entity.getGender();
+        this.birthDate = entity.getBirthDate();
         this.registerDate = entity.getRegisterDate();
         this.updateDate = entity.getUpdateDate();
-
     }
 
 }
