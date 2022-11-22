@@ -41,7 +41,7 @@ class UserServiceTest {
 //
 //        // then
 //        assertEquals(1, userRepository.count());
-//        User user = userRepository.findAll().get(0);
+//        Code user = userRepository.findAll().get(0);
 //        assertEquals("test@nate.com", user.getUserMail());
 //        assertEquals("홍길동", user.getNickName());
 //    }
