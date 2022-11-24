@@ -4,8 +4,6 @@ import com.date.tingting.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,26 +11,26 @@ import java.time.LocalDateTime;
 public class UserResponse {
 
     private String uuid;
+    private String userId;
     private String userMail;
     private String password;
     private String university;
     private String major;
-    private String nickName;
     private String gender;
-    private String birthDate;
+    private String birthDay;
     private LocalDateTime registerDate;
     private LocalDateTime updateDate;
 
 
     public UserResponse(User entity) {
         this.uuid = entity.getUuid();
+        this.userId = entity.getUserId();
         this.userMail = entity.getUserMail();
         this.password = entity.getPassword();
         this.university = entity.getUniversity();
         this.major = entity.getMajor();
-        this.nickName = entity.getNickName();
         this.gender = entity.getGender();
-        this.birthDate = entity.getBirthDate();
+        this.birthDay = entity.getBirthDay();
         this.registerDate = entity.getRegisterDate();
         this.updateDate = entity.getUpdateDate();
     }

@@ -24,19 +24,7 @@ public class UserService {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         userRequest.setUuid(uuid);
 
-        //주민번호로 성별 구분
-        char genderNum = userRequest.getBirthDate().charAt(6);
-        String gender = genderNum%2 == 0 ? "w" : "m" ;
-        userRequest.setGender(gender);
-
-        //성별 구분용으로 받은 주민번호 마지막 숫자 제거
-        String birthDate = userRequest.getBirthDate();
-        birthDate  = birthDate.substring(0, birthDate.length() - 1);
-        userRequest.setBirthDate(birthDate);
-
-        uuid = userRepository.save(userRequest.toEntity()).getUuid();
-
-        return uuid;
+        return userRepository.save(userRequest.toEntity()).getUuid();
     }
 
     @Transactional(readOnly = true)

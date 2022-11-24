@@ -14,40 +14,40 @@ public class User extends BaseTimeEntity {
     @Id
     private String uuid;
     @Column
-    private String userMail;
+    private String userId;
     @Column
     private String password;
+    @Column
+    private String userMail;
     @Column
     private String university;
     @Column
     private String major;
     @Column
-    private String nickName;
-    @Column
     private String gender;
     @Column
-    private String birthDate;
+    private String birthDay;
     @Column
     private String isDel;
 
     @Builder
     public User(String uuid,
-                String userMail,
+                String userId,
                 String password,
+                String userMail,
                 String university,
                 String major,
-                String nickName,
                 String gender,
-                String birthDate,
+                String birthDay,
                 String isDel) {
         this.uuid = uuid;
         this.userMail = userMail;
         this.password = password;
         this.university = university;
         this.major = major;
-        this.nickName = nickName;
+        this.userId = userId;
         this.gender = gender;
-        this.birthDate = birthDate;
+        this.birthDay = birthDay;
         this.isDel = isDel;
     }
 }

@@ -9,23 +9,23 @@ import lombok.Setter;
 @Setter
 public class UserRequest {
     private String uuid;
-    private String userMail;
+    private String userId;
     private String password;
+    private String userMail;
     private String university;
     private String major;
-    private String nickName;
-    private String birthDate;
+    private String birthDay;
     private String gender;
 
     public User toEntity() {
         return User.builder()
                 .uuid(uuid)
-                .userMail(userMail)
+                .userId(userId)
                 .password(password)
+                .userMail(userMail)
                 .university(university)
                 .major(major)
-                .nickName(nickName)
-                .birthDate(birthDate)
+                .birthDay(birthDay)
                 .gender(gender)
                 .isDel("0")
                 .build();
@@ -35,8 +35,8 @@ public class UserRequest {
         if (!userMail.contains("@")) {
             throw new TingTingCommonException("올바른 이메일 형식이 아닙니다.");
         }
-        if (birthDate.length() != 7){
-            throw new TingTingCommonException("잘못된 주민등록번호 형식입니다.");
+        if (birthDay.length() != 4){
+            throw new TingTingCommonException("잘못된 생년월일 형식입니다.");
         }
     }
 
