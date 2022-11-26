@@ -24,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/user/{uuid}")
-    public TingTingResponse findByUuid(@PathVariable String uuid) {
+    public TingTingResponse getUser(@PathVariable String uuid) {
 
         User user = userService.findByUuid(uuid);
 
@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/user/list")
-    public TingTingResponse findAll() {
+    public TingTingResponse getUserList() {
 
         List<User> userList = userService.findAll();
 
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/user/register")
-    public TingTingResponse save(@RequestBody UserRequest userRequest){
+    public TingTingResponse createUser(@RequestBody UserRequest userRequest){
 
         userRequest.validate();
         String uuid = userService.save(userRequest);

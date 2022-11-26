@@ -11,7 +11,7 @@ public class UserRequest {
     private String uuid;
     private String userId;
     private String password;
-    private String userMail;
+    private String userEmail;
     private String university;
     private String major;
     private String birthDay;
@@ -22,7 +22,7 @@ public class UserRequest {
                 .uuid(uuid)
                 .userId(userId)
                 .password(password)
-                .userMail(userMail)
+                .userEmail(userEmail)
                 .university(university)
                 .major(major)
                 .birthDay(birthDay)
@@ -32,7 +32,7 @@ public class UserRequest {
     }
 
     public void validate() {
-        if (!userMail.contains("@")) {
+        if (!userEmail.contains("@")) {
             throw new TingTingCommonException("올바른 이메일 형식이 아닙니다.");
         }
         if (birthDay.length() != 4){

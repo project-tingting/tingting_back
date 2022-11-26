@@ -25,3 +25,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.naver.com
+    port: 587
+    username: "tingting7777@naver.com"
+    password: "!Q2w3e4r5t6y"
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000

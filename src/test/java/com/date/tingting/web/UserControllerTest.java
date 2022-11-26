@@ -41,17 +41,17 @@ class UserControllerTest {
     void getUser() throws Exception {
         // given
         User user = User.builder()
-                .userMail("test@nate.com")
+                .userEmail("test@nate.com")
                 .password("1234")
                 .university("서울대학교")
                 .major("컴퓨터공학과")
-                .nickName("홍길동")
+                .userId("홍길동")
                 .isDel("0")
                 .build();
         userRepository.save(user);
 
         // expected
-        mockMvc.perform(get("/user/{userMail}", "test@nate.com")
+        mockMvc.perform(get("/user/{userEmail}", "test@nate.com")
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.university").value("서울대학교"))
@@ -59,23 +59,4 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    @DisplayName("회원가입 - 잘못된 이메일 형식")
-//    void 회원가입_실패_1() throws Exception {
-//        // given
-//        UserRequest userRequest = UserRequest.builder()
-//                .userMail("test#nate.com")
-//                .password("1234")
-//                .university("서울대학교")
-//                .major("컴퓨터공학과")
-//                .nickName("홍길동")
-//                .build();
-//        String json = objectMapper.writeValueAsString(userRequest);
-//        // expected
-//        mockMvc.perform(post("/user")
-//                .contentType(APPLICATION_JSON)
-//                .content(json))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
 }

@@ -12,7 +12,7 @@ public class UserResponse {
 
     private String uuid;
     private String userId;
-    private String userMail;
+    private String userEmail;
     private String password;
     private String university;
     private String major;
@@ -25,7 +25,7 @@ public class UserResponse {
     public UserResponse(User entity) {
         this.uuid = entity.getUuid();
         this.userId = entity.getUserId();
-        this.userMail = entity.getUserMail();
+        this.userEmail = entity.getUserEmail();
         this.password = entity.getPassword();
         this.university = entity.getUniversity();
         this.major = entity.getMajor();
