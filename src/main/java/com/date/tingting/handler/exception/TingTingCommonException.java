@@ -8,6 +8,6 @@ public class TingTingCommonException extends CommonException{
 
     @Override
     public int getStatusCode() {
-        return 401;
+        return 400;
     }
 }

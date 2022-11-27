@@ -1,6 +1,8 @@
 package com.date.tingting.web.responseDto;
 
 import com.date.tingting.domain.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +35,16 @@ public class UserResponse {
         this.birthDay = entity.getBirthDay();
         this.registerDate = entity.getRegisterDate();
         this.updateDate = entity.getUpdateDate();
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class TokenInfo {
+        private String grantType;
+        private String accessToken;
+        private String refreshToken;
+        private Long refreshTokenExpirationTime;
     }
 
 }
