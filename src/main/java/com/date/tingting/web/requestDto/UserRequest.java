@@ -28,6 +28,7 @@ public class UserRequest {
                 .birthDay(birthDay)
                 .gender(gender)
                 .isDel("0")
+                .isActive("0")
                 .build();
     }
 

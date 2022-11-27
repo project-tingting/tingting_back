@@ -29,6 +29,8 @@ public class User extends BaseTimeEntity {
     private String birthDay;
     @Column
     private String isDel;
+    @Column
+    private String isActive;
 
     @Builder
     public User(String uuid,
@@ -39,7 +41,8 @@ public class User extends BaseTimeEntity {
                 String major,
                 String gender,
                 String birthDay,
-                String isDel) {
+                String isDel,
+                String isActive) {
         this.uuid = uuid;
         this.userEmail = userEmail;
         this.password = password;
@@ -49,5 +52,11 @@ public class User extends BaseTimeEntity {
         this.gender = gender;
         this.birthDay = birthDay;
         this.isDel = isDel;
+        this.isActive = isActive;
     }
+
+    public void emailVerifiedSuccess() {
+        this.isActive = "1";
+    }
+
 }

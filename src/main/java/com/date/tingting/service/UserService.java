@@ -4,12 +4,16 @@ import com.date.tingting.domain.emailAuth.EmailAuth;
 import com.date.tingting.domain.emailAuth.EmailAuthRepository;
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
+import com.date.tingting.handler.exception.EmailAuthTokenNotFountException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
+import com.date.tingting.handler.exception.UserNotFoundException;
+import com.date.tingting.web.requestDto.EmailAuthRequest;
 import com.date.tingting.web.requestDto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,6 +71,21 @@ public class UserService {
         }
 
         return user;
+    }
+
+    /**
+     * 이메일 인증 성공
+     * @param emailAuthRequest
+     */
+    @Transactional
+    public void confirmEmail(EmailAuthRequest emailAuthRequest) {
+
+        EmailAuth emailAuth = emailAuthRepository.findValidAuthByEmail(emailAuthRequest.getUserEmail(), emailAuthRequest.getAuthToken(), LocalDateTime.now())
+                .orElseThrow(EmailAuthTokenNotFountException::new);
+
+        User user = userRepository.findByUserEmail(emailAuthRequest.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        emailAuth.useToken();
+        user.emailVerifiedSuccess();
     }
 
 }

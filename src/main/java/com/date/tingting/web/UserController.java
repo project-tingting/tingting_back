@@ -4,12 +4,12 @@ import com.date.tingting.domain.user.User;
 import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.response.ResponseService;
 import com.date.tingting.service.UserService;
+import com.date.tingting.web.requestDto.EmailAuthRequest;
 import com.date.tingting.web.requestDto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,6 +52,12 @@ public class UserController {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("uuid",uuid);
         return responseService.getTingTingResponse(resultMap);
+    }
+
+    @GetMapping("/user/confirme")
+    public TingTingResponse confirmEmail(EmailAuthRequest emailAuthRequest) {
+        userService.confirmEmail(emailAuthRequest);
+        return responseService.getTingTingResponse("인증 완료");
     }
 
 }
