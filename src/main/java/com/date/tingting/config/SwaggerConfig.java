@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("TingTing API")
+                .title("TingTing API 명세")
                 .description("TingTing's API DOC")
                 .version("1.0")
                 .build();
