@@ -18,11 +18,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -120,8 +122,7 @@ public class UserService {
     }
 
 
-    @Transactional(readOnly = true)
-    public User findByUuid(String uuid) {
+    public User getUser(String uuid) {
         User user = userRepository.findByUuid(uuid);
 
         if(user == null){
@@ -131,8 +132,7 @@ public class UserService {
         return user;
     }
 
-    @Transactional(readOnly = true)
-    public List<User> findAll() {
+    public List<User> getUserList() {
         List<User> user = userRepository.findAll();
 
         if(user == null){
@@ -155,6 +155,12 @@ public class UserService {
         User user = userRepository.findByUserEmail(emailAuthRequest.getUserEmail()).orElseThrow(UserNotFoundException::new);
         emailAuth.useToken();
         user.emailVerifiedSuccess();
+    }
+
+
+    public User confirmCheck(String userEmail) {
+        return userRepository.findByUserEmailAndIsActive(userEmail,"1")
+                .orElseThrow(() -> new TingTingCommonException("인증되지 않은 유저입니다."));
     }
 
 }

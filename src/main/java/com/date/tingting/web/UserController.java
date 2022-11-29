@@ -3,6 +3,7 @@ package com.date.tingting.web;
 import com.date.tingting.domain.user.User;
 import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.response.ResponseService;
+import com.date.tingting.service.EmailAuthService;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.requestDto.*;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class UserController {
     @GetMapping("/user/{uuid}")
     public TingTingResponse getUser(@PathVariable String uuid) {
 
-        User user = userService.findByUuid(uuid);
+        User user = userService.getUser(uuid);
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("user",user);
@@ -35,17 +36,31 @@ public class UserController {
     @GetMapping("/user/list")
     public TingTingResponse getUserList() {
 
-        List<User> userList = userService.findAll();
+        List<User> userList = userService.getUserList();
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("userList",userList);
         return responseService.getTingTingResponse(resultMap);
     }
 
+    /**
+     * 메일 인증 완료
+     */
     @GetMapping("/user/confirme")
     public TingTingResponse confirmEmail(EmailAuthRequest emailAuthRequest) {
         userService.confirmEmail(emailAuthRequest);
         return responseService.getTingTingResponse("인증 완료");
+    }
+
+    /**
+     * 해당 메일의 유저가 인증이 완료된 유저인지 확인하기
+     */
+    @GetMapping("/user/confirmecheck/{userEmail}")
+    public TingTingResponse confirmCheck(@PathVariable String userEmail) {
+        User user = userService.confirmCheck(userEmail);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("user",user);
+        return responseService.getTingTingResponse(resultMap);
     }
 
     @PostMapping("/user/signup")
@@ -64,4 +79,5 @@ public class UserController {
         userService.logout(userLogout);
         return responseService.getTingTingResponse("로그아웃 완료");
     }
+
 }

@@ -17,7 +17,6 @@ public class UserResponse {
     private String userEmail;
     private String password;
     private String university;
-    private String major;
     private String gender;
     private String birthDay;
     private LocalDateTime registerDate;
@@ -30,7 +29,6 @@ public class UserResponse {
         this.userEmail = entity.getUserEmail();
         this.password = entity.getPassword();
         this.university = entity.getUniversity();
-        this.major = entity.getMajor();
         this.gender = entity.getGender();
         this.birthDay = entity.getBirthDay();
         this.registerDate = entity.getRegisterDate();

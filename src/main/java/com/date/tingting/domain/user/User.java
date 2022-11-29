@@ -30,8 +30,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private String university;
     @Column
-    private String major;
-    @Column
     private String gender;
     @Column
     private String birthDay;
@@ -39,7 +37,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String isDel;
     @Column
     private String isActive;
-
     @Column
     private String roles;
 
@@ -47,13 +44,12 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
     @Builder
-    public User(String uuid, String userId, String password, String userEmail, String university, String major, String gender, String birthDay, String isDel, String isActive, String roles) {
+    public User(String uuid, String userId, String password, String userEmail, String university, String gender, String birthDay, String isDel, String isActive, String roles) {
         this.uuid = uuid;
         this.userId = userId;
         this.password = password;
         this.userEmail = userEmail;
         this.university = university;
-        this.major = major;
         this.gender = gender;
         this.birthDay = birthDay;
         this.isDel = isDel;

@@ -1,13 +1,21 @@
 package com.date.tingting.service;
 
+import com.date.tingting.domain.emailAuth.EmailAuth;
+import com.date.tingting.domain.user.User;
+import com.date.tingting.handler.exception.EmailAuthTokenNotFountException;
+import com.date.tingting.handler.exception.UserNotFoundException;
+import com.date.tingting.web.requestDto.EmailAuthRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 
-@org.springframework.stereotype.Service
+@Service
 @EnableAsync
 @RequiredArgsConstructor
 public class EmailAuthService {
