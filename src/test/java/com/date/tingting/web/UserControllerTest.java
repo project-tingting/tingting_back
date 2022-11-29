@@ -43,7 +43,6 @@ class UserControllerTest {
                 .userEmail("test@nate.com")
                 .password("1234")
                 .university("서울대학교")
-                .major("컴퓨터공학과")
                 .userId("홍길동")
                 .isDel("0")
                 .build();
