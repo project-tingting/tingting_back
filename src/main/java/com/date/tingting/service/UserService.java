@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +45,8 @@ public class UserService {
 
     @Transactional
     public String signup(UserSignUp userSignUp) {
+
+        //메일 인증을 완료하지 않은 상태에서 다시 회원가입 할 경우 해당 유저를 삭제하고 재생성 한다.
         if (userRepository.existsByUserId(userSignUp.getUserId())) {
             User target = userRepository.findByUserId(userSignUp.getUserId()).get();
             if (target.getIsActive().equals("0")) {
@@ -53,6 +54,7 @@ public class UserService {
             }
             throw new TingTingCommonException("이미 존재하는 아이디입니다.");
         }
+
         //유저 고유 식별 키 생성
         String uuid = UUID.randomUUID().toString().replace("-", "");
         User user = User.builder()
@@ -68,7 +70,20 @@ public class UserService {
                 .roles(Authority.ROLE_USER.name())
                 .build();
 
-        return userRepository.save(user).getUuid();
+        uuid = userRepository.save(user).getUuid();
+
+        // 메일 인증 토큰 생성
+        EmailAuth emailAuth = emailAuthRepository.save(
+                EmailAuth.builder()
+                        .userEmail(userSignUp.getUserEmail())
+                        .authToken(UUID.randomUUID().toString())
+                        .expired(false)
+                        .build());
+
+        //메일 발송
+        emailAuthService.send(emailAuth.getUserEmail(), emailAuth.getAuthToken());
+
+        return uuid;
     }
 
     @Transactional
@@ -104,26 +119,6 @@ public class UserService {
                 .set(userLogout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
     }
 
-    @Transactional
-    public String save(UserRequest userRequest){
-
-        // 메일 인증 토큰 생성
-        EmailAuth emailAuth = emailAuthRepository.save(
-                EmailAuth.builder()
-                        .userEmail(userRequest.getUserEmail())
-                        .authToken(UUID.randomUUID().toString())
-                        .expired(false)
-                        .build());
-
-        //유저 고유 식별 키 생성
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        userRequest.setUuid(uuid);
-
-        //메일 발송
-        emailAuthService.send(emailAuth.getUserEmail(), emailAuth.getAuthToken());
-
-        return userRepository.save(userRequest.toEntity()).getUuid();
-    }
 
     @Transactional(readOnly = true)
     public User findByUuid(String uuid) {

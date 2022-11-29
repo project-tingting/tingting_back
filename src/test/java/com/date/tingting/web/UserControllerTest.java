@@ -2,7 +2,6 @@ package com.date.tingting.web;
 
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.web.requestDto.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

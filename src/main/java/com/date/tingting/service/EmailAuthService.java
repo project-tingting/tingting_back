@@ -16,7 +16,7 @@ public class EmailAuthService {
     @Async
     public void send(String email, String authToken) {
         SimpleMailMessage smm = new SimpleMailMessage();
-        smm.setTo("noah1@getnada.com");
+        smm.setTo(email);
         smm.setSubject("회원가입 이메일 인증");
         smm.setText("http://localhost:8080/sign/confirm-email?email="+email+"&authToken="+authToken);
         smm.setFrom("tingting7777@naver.com");

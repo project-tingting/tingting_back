@@ -8,7 +8,6 @@ import com.date.tingting.web.requestDto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
@@ -40,17 +39,6 @@ public class UserController {
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("userList",userList);
-        return responseService.getTingTingResponse(resultMap);
-    }
-
-    @PostMapping("/user/register")
-    public TingTingResponse createUser(@RequestBody UserRequest userRequest){
-
-        userRequest.validate();
-        String uuid = userService.save(userRequest);
-
-        HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("uuid",uuid);
         return responseService.getTingTingResponse(resultMap);
     }
 

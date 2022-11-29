@@ -2,6 +2,7 @@ package com.date.tingting.web.requestDto;
 
 import com.date.tingting.domain.user.Authority;
 import com.date.tingting.domain.user.User;
+import com.date.tingting.handler.exception.TingTingCommonException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,4 +51,14 @@ public class UserSignUp {
                 .roles(Authority.ROLE_USER.name())
                 .build();
     }
+
+    public void validate() {
+        if (!userEmail.contains("@")) {
+            throw new TingTingCommonException("올바른 이메일 형식이 아닙니다.");
+        }
+        if (birthDay.length() != 4){
+            throw new TingTingCommonException("잘못된 생년월일 형식입니다.");
+        }
+    }
+
 }
