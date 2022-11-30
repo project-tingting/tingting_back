@@ -3,7 +3,6 @@ package com.date.tingting.web;
 import com.date.tingting.domain.user.User;
 import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.response.ResponseService;
-import com.date.tingting.service.EmailAuthService;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.requestDto.*;
 import lombok.RequiredArgsConstructor;
