@@ -1,29 +1,26 @@
 package com.date.tingting.domain.userProfile;
 
 import com.date.tingting.domain.BaseTimeEntity;
+import com.date.tingting.web.requestDto.UserProfileRequest;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import javax.persistence.*;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 @ToString
 @Getter
 @Entity
+@NoArgsConstructor
 public class UserProfile extends BaseTimeEntity {
 
     @Id
-    @Column
-    private Long UserProfileId;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long userProfileId;
     @Column
     private String uuid;
 
@@ -40,8 +37,19 @@ public class UserProfile extends BaseTimeEntity {
         this.value = value;
     }
 
-
-    public UserProfile() {
+    public static List<UserProfile> of(List<UserProfileRequest> userProfileRequestList) {
+        return userProfileRequestList.stream()
+                .map(userProfile -> UserProfile.of(userProfile))
+                .collect(toList());
     }
+
+    private static UserProfile of(UserProfileRequest userProfileRequest) {
+        return UserProfile.builder()
+                .uuid(userProfileRequest.getUuid())
+                .topic(userProfileRequest.getTopic())
+                .value(userProfileRequest.getValue())
+                .build();
+    }
+
 
 }
