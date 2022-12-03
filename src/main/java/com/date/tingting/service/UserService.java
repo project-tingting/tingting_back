@@ -52,9 +52,9 @@ public class UserService {
         if (userRepository.existsByUserId(userSignUp.getUserId())) {
             User target = userRepository.findByUserId(userSignUp.getUserId()).get();
             if (target.getIsActive().equals("0")) {
-                userRepository.deleteById(target.getUuid());
+                userRepository.deleteByUserId(target.getUserId());
             }
-            throw new TingTingCommonException("이미 존재하는 아이디입니다.");
+            throw new TingTingCommonException("기존에 존재하던 유저 삭제중 오류가 발생하였습니다.");
         }
 
         //유저 고유 식별 키 생성

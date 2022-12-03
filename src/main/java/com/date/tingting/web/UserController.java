@@ -45,7 +45,7 @@ public class UserController {
     /**
      * 메일 인증 완료
      */
-    @GetMapping("/user/confirme")
+    @GetMapping("/user/confirm")
     public TingTingResponse confirmEmail(EmailAuthRequest emailAuthRequest) {
         // TODO: 2022/12/03  파라미터 검사 해주기
         userService.confirmEmail(emailAuthRequest);
@@ -55,7 +55,7 @@ public class UserController {
     /**
      * 해당 메일의 유저가 인증이 완료된 유저인지 확인하기
      */
-    @GetMapping("/user/confirmecheck/{userEmail}")
+    @GetMapping("/user/confirmcheck/{userEmail}")
     public TingTingResponse confirmCheck(@PathVariable String userEmail) {
         User user = userService.confirmCheck(userEmail);
         HashMap<String, Object> resultMap = new HashMap<>();
