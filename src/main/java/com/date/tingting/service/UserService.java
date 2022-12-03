@@ -98,7 +98,7 @@ public class UserService {
 
         UserResponse.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
-        redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getAccessTokenExpirationTime(), TimeUnit.MILLISECONDS);
 
         return tokenInfo;
     }
