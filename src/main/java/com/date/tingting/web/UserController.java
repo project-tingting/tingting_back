@@ -47,6 +47,7 @@ public class UserController {
      */
     @GetMapping("/user/confirme")
     public TingTingResponse confirmEmail(EmailAuthRequest emailAuthRequest) {
+        // TODO: 2022/12/03  파라미터 검사 해주기
         userService.confirmEmail(emailAuthRequest);
         return responseService.getTingTingResponse("인증 완료");
     }
