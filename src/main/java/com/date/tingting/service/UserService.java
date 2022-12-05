@@ -34,10 +34,8 @@ public class UserService {
 
     @Autowired
     private final UserRepository userRepository;
-
     @Autowired
     private final EmailAuthRepository emailAuthRepository;
-
     @Autowired
     private final EmailAuthService emailAuthService;
     private final PasswordEncoder passwordEncoder;
@@ -45,17 +43,27 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisTemplate redisTemplate;
 
-    @Transactional
-    public String signup(UserSignUp userSignUp) {
 
-        //메일 인증을 완료하지 않은 상태에서 다시 회원가입 할 경우 해당 유저를 삭제하고 재생성 한다.
+    public void checkSignUpValue(UserSignUp userSignUp){
+
+        //메일 인증을 완료하지 않은 상태에서 다시 회원가입 할 경우, 해당 유저 정보와 인증 토큰 정보를 삭제한다.
         if (userRepository.existsByUserId(userSignUp.getUserId())) {
             User target = userRepository.findByUserId(userSignUp.getUserId()).get();
             if (target.getIsActive().equals("0")) {
-                userRepository.deleteByUserId(target.getUserId());
+                try {
+                    userRepository.deleteByUserId(target.getUserId());
+                    emailAuthRepository.deleteByUserEmail(userSignUp.getUserEmail());
+                }catch (Exception e){
+                    throw new TingTingCommonException("기존에 존재하던 유저 삭제중 오류가 발생하였습니다.");
+                }
+            }else{
+                throw new TingTingCommonException("이미 존재하는 아이디입니다.");
             }
-            throw new TingTingCommonException("기존에 존재하던 유저 삭제중 오류가 발생하였습니다.");
         }
+    }
+
+    @Transactional
+    public String signup(UserSignUp userSignUp) {
 
         //유저 고유 식별 키 생성
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -72,7 +80,13 @@ public class UserService {
                 .roles(Authority.ROLE_USER.name())
                 .build();
 
-        uuid = userRepository.save(user).getUuid();
+        //todo
+        //Duplicate 이슈가 왜 예외처리 안걸리는지 확인하기
+        try {
+            uuid = userRepository.save(user).getUuid();
+        }catch (Exception e){
+            throw new TingTingCommonException(e.getMessage());
+        }
 
         // 메일 인증 토큰 생성
         EmailAuth emailAuth = emailAuthRepository.save(

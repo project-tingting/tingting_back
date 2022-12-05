@@ -65,6 +65,7 @@ public class UserController {
 
     @PostMapping("/user/signup")
     public TingTingResponse singup(@RequestBody UserSignUp userSignUp) {
+        userService.checkSignUpValue(userSignUp);
         String result = userService.signup(userSignUp);
         return responseService.getTingTingResponse("회원가입 완료 " + result);
     }
