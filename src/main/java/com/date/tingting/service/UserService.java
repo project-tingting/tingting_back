@@ -10,9 +10,11 @@ import com.date.tingting.handler.exception.EmailAuthTokenNotFountException;
 import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
 import com.date.tingting.handler.exception.UserNotFoundException;
+import com.date.tingting.utils.GetUniversityFromEmail;
 import com.date.tingting.web.requestDto.*;
 import com.date.tingting.web.responseDto.UserResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -44,7 +47,16 @@ public class UserService {
     private final RedisTemplate redisTemplate;
 
 
+    @Transactional
     public void checkSignUpValue(UserSignUp userSignUp){
+
+        //학교 메일의 도메인은 학교 마다 고유하니, 도메인을 university에 저장한다.
+        String universityName = GetUniversityFromEmail.get(userSignUp.getUserEmail());
+        if(universityName != null){
+            userSignUp.setUniversity(universityName);
+        }else{
+            throw new TingTingCommonException("이메일 형식에서 학교 네임을 확인할 수 없습니다.");
+        }
 
         //메일 인증을 완료하지 않은 상태에서 다시 회원가입 할 경우, 해당 유저 정보와 인증 토큰 정보를 삭제한다.
         if (userRepository.existsByUserId(userSignUp.getUserId())) {
@@ -54,10 +66,17 @@ public class UserService {
                     userRepository.deleteByUserId(target.getUserId());
                     emailAuthRepository.deleteByUserEmail(userSignUp.getUserEmail());
                 }catch (Exception e){
+                    e.getMessage();
                     throw new TingTingCommonException("기존에 존재하던 유저 삭제중 오류가 발생하였습니다.");
                 }
             }else{
                 throw new TingTingCommonException("이미 존재하는 아이디입니다.");
+            }
+        }else if(userRepository.existsByUserEmail(userSignUp.getUserEmail())){
+            User target = userRepository.findByUserEmail(userSignUp.getUserEmail()).get();
+            if (target.getIsActive().equals("0")) {
+                userRepository.deleteByUserEmail(target.getUserEmail());
+                emailAuthRepository.deleteByUserEmail(userSignUp.getUserEmail());
             }
         }
     }
