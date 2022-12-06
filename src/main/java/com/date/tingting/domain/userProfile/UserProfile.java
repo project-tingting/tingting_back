@@ -36,20 +36,4 @@ public class UserProfile extends BaseTimeEntity {
         this.topic = topic;
         this.value = value;
     }
-
-    public static List<UserProfile> of(List<UserProfileRequest> userProfileRequestList) {
-        return userProfileRequestList.stream()
-                .map(userProfile -> UserProfile.of(userProfile))
-                .collect(toList());
-    }
-
-    private static UserProfile of(UserProfileRequest userProfileRequest) {
-        return UserProfile.builder()
-                .uuid(userProfileRequest.getUuid())
-                .topic(userProfileRequest.getTopic())
-                .value(userProfileRequest.getValue())
-                .build();
-    }
-
-
 }

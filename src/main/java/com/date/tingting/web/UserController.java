@@ -1,16 +1,21 @@
 package com.date.tingting.web;
 
 import com.date.tingting.domain.user.User;
+import com.date.tingting.domain.user.UserRepository;
 import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.response.ResponseService;
+import com.date.tingting.service.UserProfileService;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.requestDto.*;
+import com.date.tingting.web.responseDto.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -21,14 +26,26 @@ public class UserController {
     private final ResponseService responseService;
     @Autowired
     private final UserService userService;
+    @Autowired
+    private final UserRepository userRepository;
+    @Autowired
+    private final UserProfileService userProfileService;
 
-    @GetMapping("/user/{uuid}")
-    public TingTingResponse getUser(@PathVariable String uuid) {
+    @GetMapping("/user")
+    public TingTingResponse getUser(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
 
-        User user = userService.getUser(uuid);
+        //todo
+        //user에서 Uuid 가져오기, 리스폰되는 데이터에서 비밀번호는 제외하기
+        String userId = user.getUsername();
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+
+        User userInfo  = userService.getUser(userOptional.get().getUuid());
+
+        List<UserProfileResponse> userProfileList = userProfileService.getUserProfile(user);
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("user",user);
+        resultMap.put("user",userInfo);
+        resultMap.put("userProfileList",userProfileList);
         return responseService.getTingTingResponse(resultMap);
     }
 
