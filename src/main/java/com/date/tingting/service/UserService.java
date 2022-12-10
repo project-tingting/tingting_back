@@ -3,6 +3,7 @@ package com.date.tingting.service;
 import com.date.tingting.config.jwt.JwtTokenProvider;
 import com.date.tingting.domain.emailAuth.EmailAuth;
 import com.date.tingting.domain.emailAuth.EmailAuthRepository;
+import com.date.tingting.domain.tingTingToken.TingTingTokenRepository;
 import com.date.tingting.domain.user.Authority;
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
@@ -45,6 +46,9 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisTemplate redisTemplate;
+    @Autowired
+    private final TingTingTokenRepository tingTingTokenRepository;
+
 
 
     @Transactional
@@ -156,6 +160,7 @@ public class UserService {
 
 
     public User getUser(String uuid) {
+
         User user = userRepository.findByUuid(uuid);
 
         if(user == null){

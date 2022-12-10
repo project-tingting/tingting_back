@@ -1,9 +1,11 @@
 package com.date.tingting.web;
 
+import com.date.tingting.domain.tingTingToken.TingTingToken;
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
 import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.response.ResponseService;
+import com.date.tingting.service.TingTingTokenService;
 import com.date.tingting.service.UserProfileService;
 import com.date.tingting.service.UserService;
 import com.date.tingting.web.requestDto.*;
@@ -15,7 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -30,22 +31,27 @@ public class UserController {
     private final UserRepository userRepository;
     @Autowired
     private final UserProfileService userProfileService;
+    @Autowired
+    private final TingTingTokenService tingTingTokenService;
 
     @GetMapping("/user")
     public TingTingResponse getUser(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
 
-        //todo
-        //user에서 Uuid 가져오기, 리스폰되는 데이터에서 비밀번호는 제외하기
-        String userId = user.getUsername();
-        Optional<User> userOptional = userRepository.findByUserId(userId);
 
-        User userInfo  = userService.getUser(userOptional.get().getUuid());
+        User userInfo  = userService.getUser(user.getUsername());
 
         List<UserProfileResponse> userProfileList = userProfileService.getUserProfile(user);
+
+        TingTingToken tingTingToken = tingTingTokenService.getTingTingTokenInfo(user.getUsername());
+
+        //todo
+        //user에서 Uuid 가져오기, 리스폰되는 데이터에서 비밀번호는 제외하기
 
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("user",userInfo);
         resultMap.put("userProfileList",userProfileList);
+        resultMap.put("tingTingToken",tingTingToken);
+
         return responseService.getTingTingResponse(resultMap);
     }
 
