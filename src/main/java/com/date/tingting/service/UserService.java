@@ -156,7 +156,6 @@ public class UserService {
 
 
     public User getUser(String uuid) {
-
         User user = userRepository.findByUuid(uuid);
 
         if(user == null){

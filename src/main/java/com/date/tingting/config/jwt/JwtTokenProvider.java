@@ -51,11 +51,14 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
+        //프론트 요청으로 Uuid 제공
+        Optional<com.date.tingting.domain.user.User> userInfo = userRepository.findByUserId(authentication.getName());
+
 
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(userInfo.get().getUuid())
                 .claim(AUTHORITIES_KEY, authorities)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -66,9 +69,6 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-
-        //프론트 요청으로 Uuid 제공
-        Optional<com.date.tingting.domain.user.User> userInfo = userRepository.findByUserId(authentication.getName());
 
         return UserResponse.TokenInfo.builder()
                 .grantType(BEARER_TYPE)

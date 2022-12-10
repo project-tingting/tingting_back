@@ -12,16 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserProfileService {
-
 
     @Autowired
     private final UserProfileRepository userProfileRepository;
@@ -33,11 +30,6 @@ public class UserProfileService {
     public void createUserProfile(List<UserProfileRequest> userProfileRequestList, User user) {
 
         //todo
-        //user에서 바로 Uuid 뽑기
-        String userId = user.getUsername();
-        Optional<com.date.tingting.domain.user.User> userInfo = userRepository.findByUserId(userId);
-
-        //todo
         //해당 방식으로 저장하게 되면, jpa session이 낭비되지 않을까
         for(UserProfileRequest userProfileRequest : userProfileRequestList){
 
@@ -45,7 +37,7 @@ public class UserProfileService {
 
                 for(String value : valueList){
                     UserProfile userProfile = UserProfile.builder()
-                            .uuid(userInfo.get().getUuid())
+                            .uuid(user.getUsername())
                             .topic(userProfileRequest.getTopic())
                             .value(value)
                             .build();
@@ -58,12 +50,9 @@ public class UserProfileService {
 
     public List<UserProfileResponse> getUserProfile(User user) {
 
-        String userId = user.getUsername();
-        Optional<com.date.tingting.domain.user.User> userInfo = userRepository.findByUserId(userId);
-
         //todo
         //SqlResultSetMapping 또는 다른 방식 이용하여 조회하기
-        List<UserProfile> userProfileList = userProfileRepository.findByUuid(userInfo.get().getUuid());
+        List<UserProfile> userProfileList = userProfileRepository.findByUuid(user.getUsername());
 
         if(userProfileList == null || userProfileList.size() < 1){
             throw new TingTingDataNotFoundException();
