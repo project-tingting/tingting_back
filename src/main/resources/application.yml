@@ -13,7 +13,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://tingting-dev.cdzu7yawx9hf.ap-northeast-1.rds.amazonaws.com:3306/tingting?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/tingting?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: tingting
     password: "!Q2w3e4r5t6y"
   jpa:
