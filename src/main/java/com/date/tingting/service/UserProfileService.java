@@ -1,5 +1,6 @@
 package com.date.tingting.service;
 
+import com.date.tingting.domain.userProfile.UserProfileCustomRepositoryImpl;
 import com.date.tingting.web.responseDto.UserProfileResponse;
 import org.springframework.security.core.userdetails.User;
 import com.date.tingting.domain.userProfile.UserProfile;
@@ -19,6 +20,9 @@ public class UserProfileService {
 
     @Autowired
     private final UserProfileRepository userProfileRepository;
+
+    @Autowired
+    private final UserProfileCustomRepositoryImpl userProfileCustomRepositoryImpl;
 
     @Transactional
     public void createUserProfile(List<UserProfileRequest> userProfileRequestList, User user) {
@@ -75,6 +79,28 @@ public class UserProfileService {
     }
 
 
+    @Transactional
+    public void updateUserProfile(List<UserProfileRequest> userProfileRequestList, User user) {
+
+        String uuid = user.getUsername();
+        //토픽에 대한 유저 프로파일 지우기
+        for(UserProfileRequest userProfileRequest : userProfileRequestList){
+
+            userProfileCustomRepositoryImpl.deleteUserProfile(uuid, userProfileRequest.getTopic());
+
+            List<String> valueList = userProfileRequest.getValueList();
+
+            for(String value : valueList){
+                UserProfile userProfile = UserProfile.builder()
+                        .uuid(uuid)
+                        .topic(userProfileRequest.getTopic())
+                        .value(value)
+                        .build();
+
+                userProfileRepository.save(userProfile);
+            }
+        }
+    }
 
 
 }

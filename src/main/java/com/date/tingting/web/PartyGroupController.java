@@ -17,7 +17,6 @@ public class PartyGroupController {
     private final PartyGroupService partyGroupService;
     @Autowired
     private final ResponseService responseService;
-
     @GetMapping("/party/user/list")
     public TingTingResponse getPartyUserList(@AuthenticationPrincipal User user) {
         return responseService.getTingTingResponse(partyGroupService.getPartyUserList(user));

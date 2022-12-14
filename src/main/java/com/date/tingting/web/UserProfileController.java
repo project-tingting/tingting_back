@@ -44,4 +44,11 @@ public class UserProfileController {
         return responseService.getTingTingResponse(resultMap);
     }
 
+    @PutMapping("/userprofile")
+    public TingTingResponse updateUserProfile(@RequestBody List<UserProfileRequest> userProfileRequestList, @AuthenticationPrincipal User user) {
+
+        userProfileService.updateUserProfile(userProfileRequestList, user);
+        return responseService.getTingTingResponse("유저 프로퍼티 수정 완료");
+    }
+
 }

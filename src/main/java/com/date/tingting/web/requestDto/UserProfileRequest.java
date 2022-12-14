@@ -12,14 +12,6 @@ public class UserProfileRequest {
     private String uuid;
     private String topic;
     private List<String> valueList;
-
     }
 
-    //    public UserProfile toEntity() {
-//        return UserProfile.builder()
-//                .uuid(uuid)
-//                .topic(topic)
-//                .value(value)
-//                .build();
-//    }
 
