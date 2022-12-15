@@ -26,7 +26,7 @@ public class EmailAuthService {
         SimpleMailMessage smm = new SimpleMailMessage();
         smm.setTo(email);
         smm.setSubject("TING_TING 회원가입 이메일 인증");
-        smm.setText("http://52.79.235.50:8080/tingting/user/confirm?userEmail="+email+"&authToken="+authToken);
+        smm.setText("http://43.200.181.226:8080/tingting/user/confirm?userEmail="+email+"&authToken="+authToken);
         smm.setFrom("tingting7777@naver.com");
 
         javaMailSender.send(smm);
