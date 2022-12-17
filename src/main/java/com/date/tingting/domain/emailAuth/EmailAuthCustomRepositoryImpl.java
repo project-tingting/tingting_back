@@ -21,7 +21,7 @@ public class EmailAuthCustomRepositoryImpl implements EmailAuthCustomRepository{
                 .selectFrom(QEmailAuth.emailAuth)
                 .where(QEmailAuth.emailAuth.userEmail.eq(email),
                         QEmailAuth.emailAuth.authToken.eq(authToken),
-//                        QEmailAuth.emailAuth.expireDate.goe(currentTime),
+                        QEmailAuth.emailAuth.expireDate.goe(currentTime),
                         QEmailAuth.emailAuth.expired.eq(false)
                         )
                 .fetchFirst();
