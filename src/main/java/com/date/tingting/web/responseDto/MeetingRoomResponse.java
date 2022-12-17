@@ -10,6 +10,12 @@ public class MeetingRoomResponse {
 
     private String roomKey;
 
+    private int manCount;
+
+    private int womanCount;
+
+    private String type;
+
     private String roomReadyStatus;
 
     private String watingExpireDate;

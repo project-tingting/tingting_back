@@ -46,6 +46,9 @@ public class MeetingRoomService {
         MeetingRoomResponse meetingRoomResponse = new MeetingRoomResponse();
         meetingRoomResponse.setRoomKey(meetingRoom.getRoomKey());
         meetingRoomResponse.setRoomReadyStatus("1");
+        meetingRoomResponse.setManCount(meetingRoom.getManCount());
+        meetingRoomResponse.setWomanCount(meetingRoom.getWomanCount());
+        meetingRoomResponse.setType(meetingRoom.getType());
         meetingRoomResponse.setWatingExpireDate(meetingRoom.getWatingExpireDate());
 
         return meetingRoomResponse;
