@@ -3,18 +3,22 @@ package com.date.tingting.web;
 import com.date.tingting.domain.tingTingToken.TingTingToken;
 import com.date.tingting.domain.user.User;
 import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.response.ResponseService;
+import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.service.TingTingTokenService;
 import com.date.tingting.service.UserProfileService;
 import com.date.tingting.service.UserService;
-import com.date.tingting.web.requestDto.*;
+import com.date.tingting.web.requestDto.EmailAuthRequest;
+import com.date.tingting.web.requestDto.UserLogin;
+import com.date.tingting.web.requestDto.UserLogout;
+import com.date.tingting.web.requestDto.UserSignUp;
 import com.date.tingting.web.responseDto.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -80,9 +84,7 @@ public class UserController {
      */
     @GetMapping("/user/confirmcheck/{userEmail}")
     public TingTingResponse confirmCheck(@PathVariable String userEmail) {
-        User user = userService.confirmCheck(userEmail);
-        HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("user",user);
+        HashMap<String, Object> resultMap = userService.confirmCheck(userEmail);
         return responseService.getTingTingResponse(resultMap);
     }
 
