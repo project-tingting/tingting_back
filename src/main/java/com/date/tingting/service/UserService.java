@@ -21,12 +21,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -195,23 +196,9 @@ public class UserService {
     }
 
 
-    public HashMap<String, Object> confirmCheck(String userEmail) {
-        HashMap<String, Object> resultMap = new HashMap<>();
-        User user = userRepository.findByUserEmailAndIsActive(userEmail,"1")
+    public User confirmCheck(String userEmail) {
+        return userRepository.findByUserEmailAndIsActive(userEmail,"1")
                 .orElseThrow(() -> new TingTingCommonException("인증되지 않은 유저입니다."));
-        resultMap.put("user", user);
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-        UserResponse.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
-        redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getAccessTokenExpirationTime(), TimeUnit.MILLISECONDS);
-
-
-        resultMap.put("token", tokenInfo);
-        return resultMap;
     }
 
 }
