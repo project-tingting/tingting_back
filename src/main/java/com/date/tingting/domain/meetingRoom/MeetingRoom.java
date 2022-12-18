@@ -16,28 +16,24 @@ public class MeetingRoom extends BaseTimeEntity {
 
     @Id
     private String roomKey;
-
     @Column
     private String type;
-
-    @Column
-    private int manCount;
-
-    @Column
-    private int womanCount;
-
     @Column
     private String watingExpireDate;
 
     @Column
     private String chattingRoomExpireDate;
+    @Column
+    private String isFull;
+    @Column
+    private String isStart;
 
     @Builder
-    public MeetingRoom(String roomKey, String type, int manCount, int womanCount, String watingExpireDate) {
+    public MeetingRoom(String roomKey, String type, String watingExpireDate, String isFull, String isStart) {
         this.roomKey = roomKey;
         this.type = type;
-        this.manCount = manCount;
-        this.womanCount = womanCount;
+        this.isFull = isFull;
+        this.isStart = isStart;
         this.watingExpireDate = watingExpireDate;
     }
 }

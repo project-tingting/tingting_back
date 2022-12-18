@@ -9,4 +9,6 @@ public interface MeetingRoomUserRepository extends JpaRepository<MeetingRoomUser
 
     MeetingRoomUser findByRoomKeyAndUuid(String roomkey, String uuid);
 
+    int countByRoomKeyAndGenderAndStatus(String roomkey, String gender, String status);
+
 }

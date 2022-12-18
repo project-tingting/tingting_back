@@ -5,8 +5,8 @@ import com.date.tingting.web.responseDto.MeetingRoomResponse;
 
 public interface MeetingRoomCustomRepository {
 
-    MeetingRoomResponse findMeetingRoomForMan(String type, String currentTime);
-    MeetingRoom findMeetingRoomForWoman(String type, String currentTime);
+    String findMeetingRoomKeyForMan(String type, String currentTime);
+    String findMeetingRoomKeyForWoman(String type, String currentTime);
 
 
 }

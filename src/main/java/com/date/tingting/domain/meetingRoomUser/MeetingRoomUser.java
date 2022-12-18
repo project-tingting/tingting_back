@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.time.LocalDateTime;
 
 
@@ -16,12 +17,13 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor
+@IdClass(MeetingRoomUserId.class)
 public class MeetingRoomUser extends BaseTimeEntity {
 
     @Id
     private String roomKey;
 
-    @Column
+    @Id
     private String uuid;
 
     @Column
