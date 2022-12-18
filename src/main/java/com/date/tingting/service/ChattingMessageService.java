@@ -1,43 +1,56 @@
 package com.date.tingting.service;
 
-import com.date.tingting.config.jwt.JwtTokenProvider;
-import com.date.tingting.domain.emailAuth.EmailAuth;
-import com.date.tingting.domain.emailAuth.EmailAuthRepository;
-import com.date.tingting.domain.tingTingToken.TingTingTokenRepository;
-import com.date.tingting.domain.user.Authority;
-import com.date.tingting.domain.user.User;
-import com.date.tingting.domain.user.UserRepository;
-import com.date.tingting.handler.exception.EmailAuthTokenNotFountException;
+import com.date.tingting.domain.chattingMessage.ChattingMessage;
+import com.date.tingting.domain.chattingMessage.ChattingMessageRepository;
+import com.date.tingting.domain.meetingRoom.MeetingRoom;
+import com.date.tingting.domain.meetingRoom.MeetingRoomRepository;
+import com.date.tingting.domain.meetingRoomUser.MeetingRoomUser;
+import com.date.tingting.domain.meetingRoomUser.MeetingRoomUserRepository;
 import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
-import com.date.tingting.handler.exception.UserNotFoundException;
-import com.date.tingting.utils.GetUniversityFromEmail;
-import com.date.tingting.web.requestDto.EmailAuthRequest;
-import com.date.tingting.web.requestDto.UserLogin;
-import com.date.tingting.web.requestDto.UserLogout;
-import com.date.tingting.web.requestDto.UserSignUp;
-import com.date.tingting.web.responseDto.UserResponse;
+import com.date.tingting.web.requestDto.ChattingMessageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChattingMessageService {
+    @Autowired
+    private final ChattingMessageRepository chattingMessageRepository;
+    @Autowired
+    private final MeetingRoomRepository meetingRoomRepository;
+    @Autowired
+    private final MeetingRoomUserRepository meetingRoomUserRepository;
+    @Autowired
+    private final UserService userService;
 
 
+    public void addChattingMessage(String roomKey, ChattingMessageRequest chattingMessageRequest, User user) {
+        com.date.tingting.domain.user.User userInfo  = userService.getUser(user.getUsername());
 
+        if(userInfo == null){
+            throw new TingTingCommonException("존재하지 않는 유저입니다.");
+        }
+
+        MeetingRoom meetingRoom = meetingRoomRepository.findByRoomKey(roomKey);
+
+        if(meetingRoom == null){
+            throw new TingTingDataNotFoundException();
+        }
+
+        MeetingRoomUser meetingRoomUser = meetingRoomUserRepository.findByRoomKeyAndUuid(meetingRoom.getRoomKey(), chattingMessageRequest.getUuid());
+        if(meetingRoomUser == null) {
+            throw new TingTingCommonException("해당 미팅룸에 접근할 수 없습니다.");
+        }
+
+        ChattingMessage.builder()
+                .roomKey(meetingRoom.getRoomKey())
+                .uuid(chattingMessageRequest.getUuid())
+                .message(chattingMessageRequest.getMessage())
+                .build();
+    }
 }

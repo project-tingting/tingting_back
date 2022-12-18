@@ -7,8 +7,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Getter
 @Setter
 public class ChattingMessageRequest {
-
-    private String roomKey;
     private String uuid;
     private String message;
 }
