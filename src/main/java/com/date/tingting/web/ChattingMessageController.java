@@ -1,5 +1,6 @@
 package com.date.tingting.web;
 
+import com.date.tingting.domain.chattingMessage.ChattingMessageRepository;
 import com.date.tingting.response.ResponseService;
 import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.service.ChattingMessageService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 
 
 @Slf4j
@@ -23,6 +25,10 @@ public class ChattingMessageController {
     @Autowired
     private final ChattingMessageService chattingMessageService;
 
+    @Autowired
+    private final ChattingMessageRepository chattingMessageRepository;
+
+
     @PostMapping("/chat/{roomKey}")
     public TingTingResponse createChatMessage(@PathVariable String roomKey,
                                               @RequestBody ChattingMessageRequest chattingMessageRequest,
@@ -30,11 +36,18 @@ public class ChattingMessageController {
         chattingMessageService.addChattingMessage(roomKey, chattingMessageRequest, user);
         return responseService.getTingTingResponse("전송 완료");
     }
-//
-//
-//    @GetMapping("/chat/{roomKey}")
-//    public TingTingResponse findChatMessage() {
-//
-//    }
+
+
+
+
+    @GetMapping("/chat/{roomKey}")
+    public TingTingResponse findChatMessage(@PathVariable String roomKey) {
+
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("messageList",chattingMessageRepository.findAllByRoomKey(roomKey));
+
+        return responseService.getTingTingResponse(resultMap);
+
+    }
 
 }

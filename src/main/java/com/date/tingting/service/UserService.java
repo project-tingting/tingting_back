@@ -127,7 +127,7 @@ public class UserService {
 
     @Transactional
     public UserResponse.TokenInfo login(UserLogin userLogin) {
-        if (!userRepository.existsByUserId(userLogin.getUserId())) throw new TingTingCommonException("존재하지 않은 유저입니다.");
+        if (!userRepository.existsByUserIdAndIsActive(userLogin.getUserId(), "1")) throw new TingTingCommonException("존재하지 않은 유저입니다.");
 
         UsernamePasswordAuthenticationToken authenticationToken = userLogin.toAuthentication();
 

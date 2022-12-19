@@ -42,15 +42,17 @@ public class ChattingMessageService {
             throw new TingTingDataNotFoundException();
         }
 
-        MeetingRoomUser meetingRoomUser = meetingRoomUserRepository.findByRoomKeyAndUuid(meetingRoom.getRoomKey(), chattingMessageRequest.getUuid());
+        MeetingRoomUser meetingRoomUser = meetingRoomUserRepository.findByRoomKeyAndUuid(meetingRoom.getRoomKey(), user.getUsername());
         if(meetingRoomUser == null) {
             throw new TingTingCommonException("해당 미팅룸에 접근할 수 없습니다.");
         }
 
-        ChattingMessage.builder()
+        ChattingMessage message = ChattingMessage.builder()
                 .roomKey(meetingRoom.getRoomKey())
-                .uuid(chattingMessageRequest.getUuid())
+                .uuid(user.getUsername())
                 .message(chattingMessageRequest.getMessage())
                 .build();
+
+        chattingMessageRepository.save(message);
     }
 }
