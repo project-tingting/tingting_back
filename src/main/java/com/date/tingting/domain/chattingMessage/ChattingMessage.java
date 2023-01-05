@@ -1,15 +1,13 @@
 package com.date.tingting.domain.chattingMessage;
 
 import com.date.tingting.domain.RegisterDateBaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChattingMessage extends RegisterDateBaseTimeEntity {
 
@@ -22,6 +20,9 @@ public class ChattingMessage extends RegisterDateBaseTimeEntity {
     private String uuid;
     @Column
     private String message;
+
+    @Transient
+    private String userId;
 
     @Builder
     public ChattingMessage(String roomKey, String uuid, String message) {

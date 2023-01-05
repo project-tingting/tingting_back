@@ -23,6 +23,10 @@ public class MeetingRoomUserService {
 
         MeetingRoomUser meetingRoomUser =  meetingRoomUserRepository.findByRoomKeyAndUuid(meetingRoomUserRequest.getRoomKey(), meetingRoomUserRequest.getUuid());
         meetingRoomUser.updateMeetingRoomUserStatus(meetingRoomUserRequest.getStatus());
+        //수락 거절중 거절하게 되면 룸에서 제외한다.
+        if(meetingRoomUserRequest.getStatus().equals("-1")){
+            meetingRoomUserRepository.deleteByUuid(meetingRoomUserRequest.getUuid());
+        }
     }
 
 }
