@@ -3,6 +3,8 @@ package com.date.tingting.domain.partyGroup;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @DynamicUpdate
+@DynamicInsert
 @Entity
 public class PartyGroup {
     @Id
@@ -24,6 +27,7 @@ public class PartyGroup {
 
     private String guest;
 
+    @ColumnDefault("'0'")
     private String isAccepted;
 
     @Builder
