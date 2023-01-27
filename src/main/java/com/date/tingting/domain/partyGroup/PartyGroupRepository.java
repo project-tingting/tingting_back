@@ -7,4 +7,7 @@ import java.util.Optional;
 public interface PartyGroupRepository extends JpaRepository<PartyGroup, Long> {
 
     Optional<PartyGroup> findByHostAndGuest(String host, String guest);
+
+    Optional<PartyGroup> findByGuest(String guest);
+
 }

@@ -6,15 +6,15 @@ import com.date.tingting.domain.user.UserRepository;
 import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.web.requestDto.UserInvitation;
 import com.date.tingting.web.responseDto.PartyUserInterface;
-import com.date.tingting.web.responseDto.PartyUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @RequiredArgsConstructor
@@ -27,20 +27,30 @@ public class PartyGroupService {
     @Autowired
     private final UserRepository userRepository;
 
-    public void addGuest(UserInvitation userInvitation) {
-        if (partyGroupRepository.findByHostAndGuest(userInvitation.getHost(), userInvitation.getGuest()).isPresent()) {
+    public void addGuest(User user, UserInvitation userInvitation) {
+        com.date.tingting.domain.user.User host = userService.getUser(user.getUsername());
+
+        if (userRepository.findByUserId(userInvitation.getGuest()).isEmpty()) {
+            throw new TingTingCommonException("존재하지 않는 유저입니다.");
+        }
+
+        if (partyGroupRepository.findByHostAndGuest(host.getUserId(), userInvitation.getGuest()).isPresent()) {
             throw new TingTingCommonException("이미 초대한 유저입니다.");
         }
 
+        if (partyGroupRepository.findByGuest(userInvitation.getGuest()).isPresent()){
+            throw new TingTingCommonException("초대할 수 없는 유저입니다.");
+        }
+
         PartyGroup partyGroup = PartyGroup.builder()
-                .host(userInvitation.getHost())
+                .host(host.getUserId())
                 .guest(userInvitation.getGuest())
                 .build();
         partyGroupRepository.save(partyGroup);
     }
 
-    public void removeGuest(UserInvitation userInvitation) {
-        PartyGroup partyGroup = partyGroupRepository.findByHostAndGuest(userInvitation.getHost(), userInvitation.getGuest())
+    public void removeGuest(String host, String guest) {
+        PartyGroup partyGroup = partyGroupRepository.findByHostAndGuest(host, guest)
                 .orElseThrow(() -> {
                             throw new TingTingCommonException("초대 되지 않은 유저입니다.");
                         }
@@ -49,18 +59,44 @@ public class PartyGroupService {
         partyGroupRepository.delete(partyGroup);
     }
 
-    public void acceptInvitation(UserInvitation userInvitation) {
-        PartyGroup partyGroup = partyGroupRepository.findByHostAndGuest(userInvitation.getHost(), userInvitation.getGuest())
+    public UserInvitation getHostList(User user) {
+        com.date.tingting.domain.user.User guest = userService.getUser(user.getUsername());
+
+        PartyGroup host = partyGroupRepository.findByGuest(guest.getUserId()).orElseThrow(
+                ()-> { throw new TingTingCommonException("초대된 내역이 없습니다."); });
+
+        if ( host.getIsAccepted().equals("1") ) {
+            throw new TingTingCommonException("이미 수락한 초대입니다.");
+        }
+
+        UserInvitation userInvitation = new UserInvitation();
+        userInvitation.setHost(host.getHost());
+        userInvitation.setGuest(host.getGuest());
+
+        return userInvitation;
+    }
+
+    public void acceptInvitation(User user) {
+        com.date.tingting.domain.user.User guest = userService.getUser(user.getUsername());
+        PartyGroup host = partyGroupRepository.findByGuest(guest.getUserId()).orElseThrow(
+                ()-> { throw new TingTingCommonException("존재하지 않는 유저입니다."); });
+
+        PartyGroup partyGroup = partyGroupRepository.findByHostAndGuest(host.getHost(), guest.getUserId())
                 .orElseThrow(() -> {
                             throw new TingTingCommonException("초대 되지 않은 유저입니다.");
                         }
                 );
         partyGroup.changeIsAccepted("1");
+//        removeGuest(host.getHost(), guest.getUserId());
     }
 
     public List<PartyUserInterface> getPartyUserList(User user) {
         com.date.tingting.domain.user.User host = userService.getUser(user.getUsername());
 
-        return userRepository.getPartyUserList(host.getUserId(), "1");
+        List<PartyUserInterface> userList = userRepository.getPartyUserList(host.getUserId(), "1").stream()
+                .filter(u -> !u.getUserId().equals(host.getUserId()))
+                .collect(Collectors.toList());
+
+        return userList;
     }
 }
