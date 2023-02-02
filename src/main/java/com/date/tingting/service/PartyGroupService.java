@@ -6,12 +6,14 @@ import com.date.tingting.domain.user.UserRepository;
 import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.web.requestDto.UserInvitation;
 import com.date.tingting.web.responseDto.PartyUserInterface;
+import com.date.tingting.web.responseDto.PartyUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -90,13 +92,31 @@ public class PartyGroupService {
 //        removeGuest(host.getHost(), guest.getUserId());
     }
 
-    public List<PartyUserInterface> getPartyUserList(User user) {
+    public List<PartyUserResponse> getPartyUserList(User user) {
         com.date.tingting.domain.user.User host = userService.getUser(user.getUsername());
+        List<PartyUserResponse> partyUserList = new ArrayList<>();
 
-        List<PartyUserInterface> userList = userRepository.getPartyUserList(host.getUserId(), "1").stream()
+        List<PartyUserInterface> userList = userRepository.getPartyUserList(host.getUserId(), "0").stream()
                 .filter(u -> !u.getUserId().equals(host.getUserId()))
                 .collect(Collectors.toList());
 
-        return userList;
+        userList.forEach(u -> {
+            PartyUserResponse partyUser = PartyUserResponse.builder().userId(u.getUserId()).invitationState(u.getInvitationState()).build();
+            Optional<PartyGroup> guest = partyGroupRepository.findByHostAndGuest(host.getUserId(), u.getUserId());
+            if(guest.isPresent()) {
+                partyUser.setInvitationState("-1");
+
+                if("1".equals(guest.get().getIsAccepted())) {
+                    partyUser.setInvitationState("9");
+                }
+            }
+
+
+            partyUserList.add(partyUser);
+        });
+
+        return partyUserList.stream()
+                .filter(partyUser -> !"0".equals(partyUser.getInvitationState()))
+                .collect(Collectors.toList());
     }
 }
