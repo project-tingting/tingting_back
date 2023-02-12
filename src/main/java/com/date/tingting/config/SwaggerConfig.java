@@ -13,22 +13,28 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
+    private static final String API_NAME = "TingTing API";
+    private static final String API_VERSION = "0.0.1";
+    private static final String API_DESCRIPTION = "TingTing API 명세서";
+
+
     @Bean
     public Docket api() {
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(this.apiInfo())
-                ;
+                .apiInfo(apiInfo());
     }
 
-    private ApiInfo apiInfo() {
+    public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("TingTing API 명세")
-                .description("TingTing's API DOC")
-                .version("1.0")
+                .title(API_NAME)
+                .version(API_VERSION)
+                .description(API_DESCRIPTION)
                 .build();
     }
 }

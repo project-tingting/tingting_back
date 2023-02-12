@@ -30,30 +30,30 @@ public class MeetingRoomCustomRepositoryImpl implements MeetingRoomCustomReposit
         QMeetingRoom meetingRoom = QMeetingRoom.meetingRoom;
         QMeetingRoomUser meetingRoomUser = QMeetingRoomUser.meetingRoomUser;
 
-        //todo
-        // 실무에서는 튜플을 사용하지않고 DTO를 주로 사용한다
-        Tuple firstTuple = jpaQueryFactory.select(meetingRoom.roomKey, meetingRoom.count())
-                .from(meetingRoom)
-                .leftJoin(QMeetingRoomUser.meetingRoomUser)
-                .on(QMeetingRoom.meetingRoom.roomKey.eq(QMeetingRoomUser.meetingRoomUser.roomKey))
-                .where( builder.and(meetingRoomUser.gender.eq("m")))
-                .where(QMeetingRoom.meetingRoom.type.eq(type))
-                .where(QMeetingRoom.meetingRoom.watingExpireDate.goe(currentTime))
-                .where(QMeetingRoom.meetingRoom.isFull.eq("0"))
-                .where(QMeetingRoom.meetingRoom.isStart.eq("0"))
-                .groupBy(meetingRoom.roomKey)
-                .having(meetingRoom.count().lt(Integer.parseInt(String.valueOf(type.charAt(0)))))
-                .orderBy(QMeetingRoom.meetingRoom.registerDate.asc())
-                .fetchFirst();
+//        //todo
+//        // 실무에서는 튜플을 사용하지않고 DTO를 주로 사용한다
+//        Tuple firstTuple = jpaQueryFactory.select(meetingRoom.roomKey, meetingRoom.count())
+//                .from(meetingRoom)
+//                .leftJoin(QMeetingRoomUser.meetingRoomUser)
+//                .on(QMeetingRoom.meetingRoom.roomKey.eq(QMeetingRoomUser.meetingRoomUser.roomKey))
+//                .where( builder.and(meetingRoomUser.gender.eq("m")))
+//                .where(QMeetingRoom.meetingRoom.type.eq(type))
+//                .where(QMeetingRoom.meetingRoom.watingExpireDate.goe(currentTime))
+//                .where(QMeetingRoom.meetingRoom.isFull.eq("0"))
+//                .where(QMeetingRoom.meetingRoom.isStart.eq("0"))
+//                .groupBy(meetingRoom.roomKey)
+//                .having(meetingRoom.count().lt(Integer.parseInt(String.valueOf(type.charAt(0)))))
+//                .orderBy(QMeetingRoom.meetingRoom.registerDate.asc())
+//                .fetchFirst();
 
 
-        //todo
+        // todo
         // 실무에서는 튜플을 사용하지않고 DTO를 주로 사용한다
         Tuple tuple = jpaQueryFactory.select(meetingRoom.roomKey, meetingRoom.count())
                 .from(meetingRoom)
                 .leftJoin(QMeetingRoomUser.meetingRoomUser)
                 .on(QMeetingRoom.meetingRoom.roomKey.eq(QMeetingRoomUser.meetingRoomUser.roomKey))
-                .where( builder.and(meetingRoomUser.gender.eq("m")))
+                .where(builder.and(meetingRoomUser.gender.eq("m")))
                 .where(QMeetingRoom.meetingRoom.type.eq(type))
                 .where(QMeetingRoom.meetingRoom.watingExpireDate.goe(currentTime))
                 .where(QMeetingRoom.meetingRoom.isFull.eq("0"))
