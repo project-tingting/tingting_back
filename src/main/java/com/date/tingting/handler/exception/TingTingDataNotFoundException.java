@@ -11,6 +11,6 @@ public class TingTingDataNotFoundException extends CommonException{
 
     @Override
     public int getStatusCode() {
-        return 401;
+        return 204;
     }
 }

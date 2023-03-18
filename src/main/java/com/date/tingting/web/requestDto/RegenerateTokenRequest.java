@@ -1,6 +1,5 @@
 package com.date.tingting.web.requestDto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +8,8 @@ import lombok.Setter;
 public class RegenerateTokenRequest {
 
     private String refreshToken;
-;
+    private String accessToken;
+
 }
 
 

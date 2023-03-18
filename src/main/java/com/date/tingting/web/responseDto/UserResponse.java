@@ -42,8 +42,8 @@ public class UserResponse {
         private String grantType;
         private String accessToken;
         private String refreshToken;
-        private Long accessTokenExpirationTime;
         private String uuid;
+        private Long refreshTokenExpirationTime;
     }
 
 }

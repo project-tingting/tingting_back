@@ -74,7 +74,7 @@ public class JwtTokenProvider {
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .accessTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
+                .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
                 .uuid(userInfo.get().getUuid())
                 .build();
     }
@@ -108,6 +108,7 @@ public class JwtTokenProvider {
             log.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
+            throw e;
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {

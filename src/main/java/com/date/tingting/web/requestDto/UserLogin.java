@@ -1,8 +1,12 @@
 package com.date.tingting.web.requestDto;
 
+import com.date.tingting.domain.user.User;
+import com.date.tingting.domain.user.UserRepository;
+import com.date.tingting.handler.exception.TingTingDataNotFoundException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @Getter
