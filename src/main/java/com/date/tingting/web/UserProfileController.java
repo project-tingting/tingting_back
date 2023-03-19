@@ -6,6 +6,8 @@ import com.date.tingting.response.TingTingResponse;
 import com.date.tingting.service.UserProfileService;
 import com.date.tingting.web.requestDto.*;
 import com.date.tingting.web.responseDto.UserProfileResponse;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ public class UserProfileController {
     private final ResponseService responseService;
 
     @PostMapping("/userprofile")
+    @ApiOperation(value="유저 프로파일 생성", notes="유저 프로파일 생성 API")
     public TingTingResponse createUserProfile(@RequestBody List<UserProfileRequest> userProfileRequestList, @AuthenticationPrincipal User user) {
 
         userProfileService.createUserProfile(userProfileRequestList, user);
@@ -35,6 +38,7 @@ public class UserProfileController {
     }
 
     @GetMapping("/userprofile")
+    @ApiOperation(value="유저 프로파일 조회", notes="유저 프로파일 조회 API")
     public TingTingResponse getUserProfile(@AuthenticationPrincipal User user) {
 
         List<UserProfileResponse> userProfileList = userProfileService.getUserProfile(user);
@@ -45,6 +49,7 @@ public class UserProfileController {
     }
 
     @PutMapping("/userprofile")
+    @ApiOperation(value="유저 프로파일 수정", notes="유저 프로파일 수정 API")
     public TingTingResponse updateUserProfile(@RequestBody List<UserProfileRequest> userProfileRequestList, @AuthenticationPrincipal User user) {
 
         userProfileService.updateUserProfile(userProfileRequestList, user);
@@ -52,3 +57,4 @@ public class UserProfileController {
     }
 
 }
+

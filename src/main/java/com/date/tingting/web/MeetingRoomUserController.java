@@ -9,6 +9,9 @@ import com.date.tingting.service.MeetingRoomService;
 import com.date.tingting.service.MeetingRoomUserService;
 import com.date.tingting.web.requestDto.MeetingRoomRequest;
 import com.date.tingting.web.requestDto.MeetingRoomUserRequest;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,6 +36,11 @@ public class MeetingRoomUserController {
 
 
     @PutMapping("/meetingroomuser/{roomKey}/{status}")
+    @ApiOperation(value="미팅 룸 유저 상태 변경", notes="매칭룸을 찾았을 때 거절, 수락 중 하나를 택할 경우의 상태 업데이트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roomKey", value = "미팅룸 키"),
+            @ApiImplicitParam(name = "status", value = "해당 미팅룸에 들어갈지에 대한 상태값"),
+    })
     public TingTingResponse updateMeetingRoomUserStatus(@PathVariable String roomKey, @PathVariable String status, @AuthenticationPrincipal User user) {
 
         MeetingRoomUserRequest meetingRoomUserRequest = new MeetingRoomUserRequest();
@@ -44,6 +52,7 @@ public class MeetingRoomUserController {
     }
 
     @GetMapping("/meetingroomuser")
+    @ApiOperation(value="미팅 룸 정보 조회", notes="미팅 룸 정보 조회 API")
     public TingTingResponse getMeetingRoomByUuid(@AuthenticationPrincipal User user) {
 
         MeetingRoomUser meetingRoomUser = meetingRoomUserRepository.findByUuid(user.getUsername());

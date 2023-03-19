@@ -135,7 +135,13 @@ public class UserService {
 
         UserResponse.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
-        redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getAccessTokenExpirationTime(), TimeUnit.MILLISECONDS);
+        Optional<User> user = userRepository.findByUserId(userLogin.getUserId());
+
+        if(user == null){
+            throw new TingTingDataNotFoundException();
+        }
+
+        redisTemplate.opsForValue().set("RT:" + user.get().getUuid(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
 
         return tokenInfo;
     }
@@ -169,6 +175,7 @@ public class UserService {
 
         return user;
     }
+
 
     public List<User> getUserList() {
         List<User> user = userRepository.findAll();

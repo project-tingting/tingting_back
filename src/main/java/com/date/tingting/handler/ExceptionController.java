@@ -2,6 +2,7 @@ package com.date.tingting.handler;
 
 import com.date.tingting.handler.exception.CommonException;
 import com.date.tingting.handler.response.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,4 +39,6 @@ public class ExceptionController {
         return ResponseEntity.status(statusCode)
                 .body(body);
     }
+
+
 }
