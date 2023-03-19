@@ -1,5 +1,6 @@
 package com.date.tingting.web.requestDto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
