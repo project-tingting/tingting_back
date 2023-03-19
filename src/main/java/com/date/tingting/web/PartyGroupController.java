@@ -24,6 +24,11 @@ public class PartyGroupController {
         return responseService.getTingTingResponse(partyGroupService.getPartyUserList(user));
     }
 
+    @GetMapping("/state")
+    public TingTingResponse getPartyState(@AuthenticationPrincipal User user) {
+        return responseService.getTingTingResponse(partyGroupService.getPartyState(user));
+    }
+
     @GetMapping("/group")
     public TingTingResponse getPartyGroupList(@AuthenticationPrincipal User user) {
         return responseService.getTingTingResponse(partyGroupService.getPartyUserList(user));

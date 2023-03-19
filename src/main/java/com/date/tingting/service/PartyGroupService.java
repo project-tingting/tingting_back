@@ -154,4 +154,27 @@ public class PartyGroupService {
 
         return partyGroup;
     }
+
+    public PartyUserResponse getPartyState(User user) {
+        com.date.tingting.domain.user.User me = userService.getUser(user.getUsername());
+
+        PartyUserInterface partyUser = userRepository.getPartyUserList(me.getUserId(), "0").get(0);
+
+        PartyUserResponse partyUserResponse = new PartyUserResponse();
+
+        if (partyUser != null) {
+            if (partyUser.getInvitationState().equals("0")) {
+                partyUserResponse.setUserId(me.getUserId());
+                partyUserResponse.setUserId("0");
+            } else {
+                partyUserResponse.setUserId(me.getUserId());
+                partyUserResponse.setUserId("-1");
+            }
+        } else {
+            partyUserResponse.setUserId(me.getUserId());
+            partyUserResponse.setInvitationState("1");
+        }
+
+        return partyUserResponse;
+    }
 }
