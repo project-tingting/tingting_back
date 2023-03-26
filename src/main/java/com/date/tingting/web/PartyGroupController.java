@@ -24,21 +24,32 @@ public class PartyGroupController {
         return responseService.getTingTingResponse(partyGroupService.getPartyUserList(user));
     }
 
+    @GetMapping("/group")
+    public TingTingResponse getPartyGroupList(@AuthenticationPrincipal User user) {
+        return responseService.getTingTingResponse(partyGroupService.getPartyUserList(user));
+    }
+
     @PostMapping("/invitation")
     public TingTingResponse addGuest(@AuthenticationPrincipal User user, @RequestBody UserInvitation userInvitation) {
         partyGroupService.addGuest(user, userInvitation);
         return responseService.getTingTingResponse("초대 완료");
     }
 
-    @GetMapping("/host/list")
-    public TingTingResponse getHostList(@AuthenticationPrincipal User user) {
-        return responseService.getTingTingResponse(partyGroupService.getHostList(user));
-    }
+//    @GetMapping("/host/list")
+//    public TingTingResponse getHostList(@AuthenticationPrincipal User user) {
+//        return responseService.getTingTingResponse(partyGroupService.getHostList(user));
+//    }
 
     @PostMapping("/accept")
     public TingTingResponse acceptInvitation(@AuthenticationPrincipal User user) {
         partyGroupService.acceptInvitation(user);
         return responseService.getTingTingResponse("초대 승락 완료");
+    }
+
+    @DeleteMapping("/reject")
+    public TingTingResponse rejectInvitation(@AuthenticationPrincipal User user) {
+        partyGroupService.rejectInvitation(user);
+        return responseService.getTingTingResponse("초대 거절 완료");
     }
 
 }
