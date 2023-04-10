@@ -1,14 +1,14 @@
 package com.date.tingting.service;
 
-import com.date.tingting.domain.chattingMessage.ChattingMessage;
-import com.date.tingting.domain.chattingMessage.ChattingMessageRepository;
+import com.date.tingting.domain.chat.Chat;
+import com.date.tingting.domain.chat.ChatRepository;
 import com.date.tingting.domain.meetingRoom.MeetingRoom;
 import com.date.tingting.domain.meetingRoom.MeetingRoomRepository;
 import com.date.tingting.domain.meetingRoomUser.MeetingRoomUser;
 import com.date.tingting.domain.meetingRoomUser.MeetingRoomUserRepository;
 import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
-import com.date.tingting.web.requestDto.ChattingMessageRequest;
+import com.date.tingting.web.requestDto.ChatRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ChattingMessageService {
+public class ChatService {
     @Autowired
-    private final ChattingMessageRepository chattingMessageRepository;
+    private final ChatRepository chatRepository;
     @Autowired
     private final MeetingRoomRepository meetingRoomRepository;
     @Autowired
@@ -29,7 +29,7 @@ public class ChattingMessageService {
     private final UserService userService;
 
 
-    public void addChattingMessage(String roomKey, ChattingMessageRequest chattingMessageRequest, User user) {
+    public void addChat(String roomKey, ChatRequest chatRequest, User user) {
         com.date.tingting.domain.user.User userInfo  = userService.getUser(user.getUsername());
 
         if(userInfo == null){
@@ -47,12 +47,12 @@ public class ChattingMessageService {
             throw new TingTingCommonException("해당 미팅룸에 접근할 수 없습니다.");
         }
 
-        ChattingMessage message = ChattingMessage.builder()
+        Chat message = Chat.builder()
                 .roomKey(meetingRoom.getRoomKey())
                 .uuid(user.getUsername())
-                .message(chattingMessageRequest.getMessage())
+                .message(chatRequest.getMessage())
                 .build();
 
-        chattingMessageRepository.save(message);
+        chatRepository.save(message);
     }
 }
