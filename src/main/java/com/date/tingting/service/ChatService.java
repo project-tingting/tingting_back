@@ -7,12 +7,10 @@ import com.date.tingting.domain.meetingRoom.MeetingRoomRepository;
 import com.date.tingting.domain.meetingRoomUser.MeetingRoomUser;
 import com.date.tingting.domain.meetingRoomUser.MeetingRoomUserRepository;
 import com.date.tingting.handler.exception.TingTingCommonException;
-import com.date.tingting.handler.exception.TingTingDataNotFoundException;
 import com.date.tingting.web.requestDto.ChatRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -25,34 +23,25 @@ public class ChatService {
     private final MeetingRoomRepository meetingRoomRepository;
     @Autowired
     private final MeetingRoomUserRepository meetingRoomUserRepository;
-    @Autowired
-    private final UserService userService;
 
+    public void createChat(ChatRequest chatRequest) {
 
-    public void addChat(String roomKey, ChatRequest chatRequest, User user) {
-        com.date.tingting.domain.user.User userInfo  = userService.getUser(user.getUsername());
-
-        if(userInfo == null){
-            throw new TingTingCommonException("존재하지 않는 유저입니다.");
-        }
-
-        MeetingRoom meetingRoom = meetingRoomRepository.findByRoomKey(roomKey);
-
+        MeetingRoom meetingRoom = meetingRoomRepository.findByRoomKey(chatRequest.getRoomKey());
         if(meetingRoom == null){
-            throw new TingTingDataNotFoundException();
+            throw new TingTingCommonException("미팅룸이 존재하지 않습니다");
         }
 
-        MeetingRoomUser meetingRoomUser = meetingRoomUserRepository.findByRoomKeyAndUuid(meetingRoom.getRoomKey(), user.getUsername());
+        MeetingRoomUser meetingRoomUser = meetingRoomUserRepository.findByRoomKeyAndUuid(meetingRoom.getRoomKey(), chatRequest.getUuid());
         if(meetingRoomUser == null) {
-            throw new TingTingCommonException("해당 미팅룸에 접근할 수 없습니다.");
+            throw new TingTingCommonException("미팅룸에 존재하는 유저가 아닙니다");
         }
 
-        Chat message = Chat.builder()
+        Chat chat = Chat.builder()
                 .roomKey(meetingRoom.getRoomKey())
-                .uuid(user.getUsername())
+                .uuid(chatRequest.getUuid())
                 .message(chatRequest.getMessage())
                 .build();
 
-        chatRepository.save(message);
+        chatRepository.save(chat);
     }
 }
