@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/tingting/regenerateToken","/regenerateToken").permitAll()
+                    .antMatchers("/tingting/regenerateToken/**","/regenerateToken/**").permitAll()
                     .antMatchers("/tingting/user").hasRole("USER")
                     .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);

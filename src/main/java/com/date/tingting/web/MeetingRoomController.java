@@ -16,6 +16,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 @RestController
 public class MeetingRoomController {
+
     @Autowired
     private final MeetingRoomService meetingRoomService;
     @Autowired
@@ -27,13 +28,13 @@ public class MeetingRoomController {
     public TingTingResponse enterToMeetingRoom(@RequestBody MeetingRoomRequest meetingRoomRequest, @AuthenticationPrincipal User user) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("roomKey",meetingRoomService.enterToMeetingRoom(meetingRoomRequest, user));
+        resultMap.put("roomKey",meetingRoomService.enterToMeetingRoom(meetingRoomRequest, user.getUsername()));
 
         return responseService.getTingTingResponse(resultMap);
     }
 
     @GetMapping("/meetingroom/{roomKey}")
-    @ApiOperation(value="코드 리스트 조회", notes="roomKey를 기반으로 미팅룸 상태 확인")
+    @ApiOperation(value="미팅 룸 정보 조회", notes="roomKey를 기반으로 미팅룸 상태 확인")
     @ApiImplicitParam(name = "roomKey", value = "룸 고유키")
     public TingTingResponse getMeetingRoomInfo(@PathVariable String roomKey) {
         return responseService.getTingTingResponse(meetingRoomService.getMeetingRoomInfo(roomKey));

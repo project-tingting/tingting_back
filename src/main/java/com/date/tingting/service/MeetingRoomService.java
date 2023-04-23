@@ -5,6 +5,7 @@ import com.date.tingting.domain.meetingRoom.MeetingRoomCustomRepositoryImpl;
 import com.date.tingting.domain.meetingRoom.MeetingRoomRepository;
 import com.date.tingting.domain.meetingRoomUser.MeetingRoomUser;
 import com.date.tingting.domain.meetingRoomUser.MeetingRoomUserRepository;
+import com.date.tingting.domain.user.User;
 import com.date.tingting.handler.exception.TingTingCommonException;
 import com.date.tingting.handler.exception.TingTingDataNotFoundException;
 import com.date.tingting.utils.GetRandomOut;
@@ -12,7 +13,6 @@ import com.date.tingting.web.requestDto.MeetingRoomRequest;
 import com.date.tingting.web.responseDto.MeetingRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
@@ -58,10 +58,9 @@ public class MeetingRoomService {
 
 
     @Transactional
-    public String enterToMeetingRoom(MeetingRoomRequest meetingRoomRequest, User user) {
+    public String enterToMeetingRoom(MeetingRoomRequest meetingRoomRequest, String uuid) {
 
-
-        com.date.tingting.domain.user.User userInfo  = userService.getUser(user.getUsername());
+        User userInfo  = userService.getUser(uuid);
 
         if(userInfo == null){
             throw new TingTingCommonException("존재하지 않는 유저입니다.");
@@ -82,13 +81,7 @@ public class MeetingRoomService {
         //1) chattingStartDate가 5분이 지나지 않은 시점의 방중 isFull =0 인데 isStart = 1 인 방 가장 먼저 매칭 -> 채팅방 구현 후 다시 작업
         //2) 남녀 숫자를 확인 후, 남는 방 입장
 
-        String roomKey = null;
-        if(userInfo.getGender().equals("m")){
-            roomKey = meetingRoomCustomRepositoryImpl.findMeetingRoomKeyForMan(meetingRoomRequest.getType(), nowTime);
-        }else{
-            roomKey = meetingRoomCustomRepositoryImpl.findMeetingRoomKeyForWoman(meetingRoomRequest.getType(), nowTime);
-        }
-
+        String roomKey = meetingRoomCustomRepositoryImpl.findMeetingRoom(meetingRoomRequest.getType(), nowTime, userInfo.getGender());
 
         //없으면 방 최초 생성한 후 입장
         if(roomKey == null) {
