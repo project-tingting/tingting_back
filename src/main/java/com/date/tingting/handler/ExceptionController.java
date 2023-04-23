@@ -2,6 +2,7 @@ package com.date.tingting.handler;
 
 import com.date.tingting.handler.exception.CommonException;
 import com.date.tingting.handler.response.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,6 @@ public class ExceptionController {
                 .message("잘못된 요청입니다.")
                 .build();
 
-        for (FieldError fieldError : e.getFieldErrors()) {
-            response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-
         return response;
     }
 
@@ -37,10 +34,11 @@ public class ExceptionController {
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(statusCode))
                 .message(e.getMessage())
-                .validation(e.getValidation())
                 .build();
 
         return ResponseEntity.status(statusCode)
                 .body(body);
     }
+
+
 }
