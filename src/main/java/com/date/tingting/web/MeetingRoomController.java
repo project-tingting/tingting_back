@@ -28,7 +28,7 @@ public class MeetingRoomController {
     public TingTingResponse enterToMeetingRoom(@RequestBody MeetingRoomRequest meetingRoomRequest, @AuthenticationPrincipal User user) {
 
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("roomKey",meetingRoomService.enterToMeetingRoom(meetingRoomRequest, user));
+        resultMap.put("roomKey",meetingRoomService.enterToMeetingRoom(meetingRoomRequest, user.getUsername()));
 
         return responseService.getTingTingResponse(resultMap);
     }

@@ -1,11 +1,11 @@
 package com.date.tingting.web.responseDto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class MeetingRoomResponse {
 
     private String roomKey;
