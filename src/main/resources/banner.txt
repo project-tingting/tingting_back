@@ -5,7 +5,6 @@ ${AnsiColor.BRIGHT_MAGENTA}   |  |    |  | |  ||  | ' '-' '    |  |    |  | |  |
 ${AnsiColor.BRIGHT_MAGENTA}   `--'    `--' `--''--' .`-  /     `--'    `--' `--''--' .`-  /
 ${AnsiColor.BRIGHT_MAGENTA}                         `---'                            `---'
 
-
 Powered by Spring Boot
 :: Spring Boot ${spring-boot.version} ::
 
